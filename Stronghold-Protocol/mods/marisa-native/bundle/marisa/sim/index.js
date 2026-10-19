@@ -3387,7 +3387,8 @@ var op_makoto_default = {
       if (unit.mem.makotoForm === f) return;
       unit.mem.makotoForm = f;
       unit.form = f;
-      battle.fx("phase", { x: unit.x, y: unit.y, id: unit.id, kind: f, form: f, dur: MASK_SWITCH });
+      const dur = num6(unit.findBuff("trait:substitute")?.timeLeft, dollDuration);
+      battle.fx("phase", { x: unit.x, y: unit.y, id: unit.id, kind: f, form: f, dur });
       fx(battle, "summon", unit, { token: maskToken(unit.mem.makotoMask), skill: "makoto" });
     };
     const hideMask = (battle, unit) => {

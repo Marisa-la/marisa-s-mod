@@ -1,32 +1,13 @@
-// Operator skins (外观皮肤) — a purely cosmetic, per-browser choice of the 干员调配 screen (screens/loadout.js).
-//
-// The MOD's own registry is data/skins.json — `{ _about, [charId]: { charId, name, skins: [{ id, name? }] } }` (one line,
-// no trailing newline like every data/*.json) — and it only says WHICH skins an operator has: `skins[].id` is the
-// official skinId (`char_4217_makoto@p3r#1`), the same key data/assets.json carries in its top-level `skins` group
-// (`skins[<skinId>] = { name, group, portrait, avatar, spine }`, written by the assets executor). The manifest is the
-// single source of truth for availability, display name and URLs: a skin counts as available only when
-// `m.skins[skinId].portrait` exists, so the day the art lands the option appears without a code change, and while it is
-// missing nothing is offered (no 404, no half a skin). `data/skins.json`'s own `name` is only the fallback label.
-//
-// The choice itself is a browser preference, NOT part of `room.loadout` (that is skills / modules, which the server
-// validates; a skin is appearance only — no protocol, no PlayerState change): `sp.pref.skins` =
-// `{ v: 1, entries: { [charId]: skinId } }` through store.js loadPref / savePref, like ui/loadoutModel.js and
-// ui/diyModel.js.
-//
-// MATERIALISATION (the single render hook): `assetsFor()` returns the manifest with the chosen skin already written into
-// `chars[charId].portrait / portraitE2 / avatar / avatarE2` (and `spine` when the manifest's skin entry carries one).
-// Every existing consumer then follows without a single change: ui/assetUrls.js chessPortraitUrl / chessAvatarUrl read
-// `chars[...]`, and so do the roster cards, the detail card, the DIY / 干员持有 tabs and the battle view. Nothing is
-// mutated in place (data.js hands out the cached object) — the copy is memoised by (manifest, registry, entries).
-//
-// SPINE: the battle model follows the same manifest entry — a skin with a `spine` the manifest lists is written into
-// `chars[charId].spine`, so assets.js spineEntry serves the skin skeleton; a skin without one leaves the default model
-// (the battle simply keeps the operator's own art, never a faked skeleton).
+// Compatibility helpers for the Marisa 0.3.0 skin registry and its pure asset utilities.
+// Live choices now belong to skins.js: one flat sp.pref.skins map, the official SkinSection picker and room.skins
+// synchronization. prepare-assets publishes the old registry's entries under chars[charId].skins as well.
+// materializeAssets remains available to old tools; the live app keeps the composed manifest intact and resolves
+// each unit's public skin separately, so another seat and the "show other players' skins" switch keep their meaning.
 
-import { loadPref, savePref } from '../store.js';
 import { data } from '../data.js';
 import { useReducer, useEffect } from '../../vendor/hooks.module.js';
 import { t, N_ } from '../../../shared/i18n.js';
+import { skinsStore, setSkin as chooseSkin, clearSkin, skinFor } from './skins.js';
 
 /** localStorage key (store.js loadPref/savePref prefix `sp.pref.`) and format version. */
 export const SKINS_PREF = 'skins';
@@ -310,6 +291,8 @@ export const skinIconUrl = (s) => (isAssetUrl(s?.avatar) ? s.avatar : isAssetUrl
  */
 export function skinPortraitUrl(m, chess, { golden = false, charId = null, skinId = null, skins = null } = {}) {
   const id = charId || skinCharId(chess);
+  const native = skinId ? m?.chars?.[id]?.skins?.[skinId] : null;
+  if (native) return (golden ? native.portraitE2 : null) || native.portrait || native.illust || m?.chars?.[id]?.portrait || null;
   const s = skinEntry(m, skins, id, skinId);
   if (s) return s.portrait;
   const rec = m?.chars?.[id];
@@ -347,16 +330,10 @@ export function skinSpine(m, skins, charId, skinId) {
 
 // ---- browser preference store -------------------------------------------------------------------------------------
 
-function readStored() {
-  try { return parseStoredSkins(loadPref(SKINS_PREF, null)); } catch { return {}; }
-}
-
-/** The chosen skins, shared by the 干员调配 screen (and anything else that wants to react to a change). */
+/** Compatibility facade for old callers; room.skins and both picker APIs use the same public store. */
 export const skinStore = {
-  entries: readStored(),
-  /** @type {Set<(entries: Record<string, string>) => void>} */
-  listeners: new Set(),
-  get() { return this.entries; },
+  get entries() { return skinsStore.get().skins; },
+  get() { return skinsStore.get().skins; },
   /**
    * Choose a skin for a charId (null / '' / unknown id = back to the default art). Persists and notifies.
    * @param {string} charId @param {string|null} skinId
@@ -364,24 +341,17 @@ export const skinStore = {
    */
   setSkin(charId, skinId) {
     if (!isId(charId) || UNSAFE_IDS.has(charId)) return this.entries;
-    const next = { ...this.entries };
-    if (isSkinId(skinId)) next[charId] = skinId;
-    else delete next[charId];
-    this.entries = next;
-    savePref(SKINS_PREF, toStoredSkins(next));
-    for (const fn of [...this.listeners]) {
-      try { fn(next); } catch (err) { console.error('[skins] listener failed', err); }
-    }
-    return next;
+    if (isSkinId(skinId)) chooseSkin(charId, skinId);
+    else clearSkin(charId);
+    return this.get();
   },
   subscribe(fn) {
-    this.listeners.add(fn);
-    return () => this.listeners.delete(fn);
+    return skinsStore.subscribe(state => fn(state.skins));
   },
 };
 
 /** The chosen skin id of a charId (the stored preference; availability is decided against the manifest). */
-export const selectedSkin = (charId) => skinOf(skinStore.get(), charId);
+export const selectedSkin = (charId) => skinFor(charId);
 
 /** Choose a skin (null = default art). The screen's click handler. */
 export function setSkin(charId, skinId) {
@@ -400,13 +370,13 @@ export function useSkins() {
 }
 
 /**
- * `data.get('assets')` with the chosen skins materialised — what every card in the 干员调配 overlay must read.
- * Loads data/skins.json (once) so the registry is there even when no screen asked for it.
+ * The composed installation manifest. Unit skins are resolved per seat, without replacing its default art.
  * @returns {any} the manifest (or null while it has not loaded)
  */
 export function assetsFor() {
-  data.load(SKINS_FILE);
-  return materializeAssets(data.get('assets'), skinsData(), skinStore.get());
+  // Each unit's public skin is resolved by the renderer. A global replacement would also skin other seats'
+  // default units and bypass the "show other players' skins" setting.
+  return data.get('assets');
 }
 
 /**

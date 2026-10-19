@@ -3,8 +3,8 @@
   "manifest": 2,
   "id": "marisa",
   "name": "魔理沙追加 MOD",
-  "version": "0.3.0",
-  "app": ">=0.3.0 <0.4.0",
+  "version": "0.3.1",
+  "app": ">=0.3.1 <0.4.0",
   "api": 1,
   "class": "script",
   "scope": [
@@ -15,8 +15,8 @@
     "Ruyl114514"
   ],
   "description": {
-    "zh": "魔理沙追加干员、罗德岛盟约与鲲策略；原生插件管理器逐项配置。需要配套的 0.3.0 兼容补丁。",
-    "en": "Marisa operators, Rhodes Island alliance and Kun strategy. Requires the 0.3.0 compatibility patch."
+    "zh": "魔理沙追加干员、罗德岛盟约与鲲策略；原生插件管理器逐项配置。需要配套的 0.3.1 兼容补丁。",
+    "en": "Marisa operators, Rhodes Island alliance and Kun strategy. Requires the 0.3.1 compatibility patch."
   },
   "permissions": [
     "data.add",

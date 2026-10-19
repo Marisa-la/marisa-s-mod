@@ -1,7 +1,7 @@
 {
   "lock": 1,
   "id": "marisa",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "generator": "tools/plugin.mjs pack",
   "files": {
     "README.md": {
@@ -9,24 +9,24 @@
       "bytes": 378
     },
     "data/profile.json": {
-      "sha256": "6530820e633f3637a5271b5be0a9ed0592d166139794559e04cdbddcf432a922",
-      "bytes": 4736103
+      "sha256": "bb575a64cb969d3576992b7cea4e71978d4e65c006817348665b64356f1d3862",
+      "bytes": 4736937
     },
     "guard.json": {
       "sha256": "922fda47860a66dfaec7393ce9e36c2359171045bda3113e6dd4bd958c96f4dc",
       "bytes": 1220
     },
     "plugin.json": {
-      "sha256": "3148428e034eb8a0f89d9380dd6922e464719863b932ac37fa1f706ba1ab9350",
+      "sha256": "984bc358597b4b7ee02ba519cc3eb907a7e7d86265e16580c38654dac4731bd9",
       "bytes": 6876
     },
     "sim/index.js": {
-      "sha256": "796ab4de8b300c55afb60c60f5efff94fc84c45a3faf98dd3195f86108ec11da",
-      "bytes": 291948
+      "sha256": "dc419770190e6ee53b4f68ef6fb997caae4b15cc8fb5e7853d7a681afe40c9fc",
+      "bytes": 292018
     },
     "test/guard.test.js": {
-      "sha256": "bb6b16414f3b30ea69b5e33ec852b42a908f151c98dae5cae0d8bd229ac91474",
-      "bytes": 14850
+      "sha256": "d448d03fafe4a4447cbe985e192dacbfdb68d421feaae1ef06e5182755bd0567",
+      "bytes": 16821
     }
   },
   "spine": {}

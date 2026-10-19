@@ -149,7 +149,10 @@ export default {
       if (unit.mem.makotoForm === f) return;
       unit.mem.makotoForm = f;
       unit.form = f;
-      battle.fx('phase', { x: unit.x, y: unit.y, id: unit.id, kind: f, form: f, dur: MASK_SWITCH });
+      // A form event's dur is its remaining lifetime, not the switch clip's length. Sending MASK_SWITCH here
+      // scheduled SwitchOut immediately, hiding the Persona while its real attacks and skill were still running.
+      const dur = num(unit.findBuff('trait:substitute')?.timeLeft, dollDuration);
+      battle.fx('phase', { x: unit.x, y: unit.y, id: unit.id, kind: f, form: f, dur });
       fx(battle, 'summon', unit, { token: maskToken(unit.mem.makotoMask), skill: 'makoto' });
     };
     const hideMask = (battle, unit) => {

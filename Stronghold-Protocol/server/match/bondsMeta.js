@@ -24,6 +24,7 @@
 // Layers (`ps.layers[bondId]`) persist the whole match; they are reported for every bond but only matter while active.
 
 import { layerGainRoom } from '../../shared/constants.js';
+import { grantedBondsByMorph, ruleOption } from '../../shared/plugins/rules.js';
 
 export const HARMONY_BOND = 'maniShip';
 export const DEPUTY_BOND = 'deputShip';
@@ -32,20 +33,16 @@ export const DEPUTY_BOND = 'deputShip';
  * Bonds of a chess piece: own bonds ∪ bonds granted by 变形同构体 pairings.
  * @param {import('./gamedata.js').GameData} gd
  * @param {{ id: string, items?: Array<{ id: string }> }} piece
+ * @param {Record<string, string>|null} [rules] the room's rule switches; omitted keeps the official pairing
  * @returns {string[]}
  */
-export function pieceBonds(gd, piece) {
+export function pieceBonds(gd, piece, rules = null) {
   const c = gd.chess(piece.id);
   const out = c && Array.isArray(c.bonds) ? c.bonds.slice() : [];
   const items = Array.isArray(piece.items) ? piece.items : [];
-  if (items.length >= 2) {
-    const recs = items.map((it) => gd.item(it.id)).filter(Boolean);
-    if (recs.some((r) => r.canGiveBond)) {
-      for (const r of recs) {
-        if (r.canGiveBond) continue;
-        if (typeof r.giveBondId === 'string' && gd.bond(r.giveBondId) && !out.includes(r.giveBondId)) out.push(r.giveBondId);
-      }
-    }
+  const mode = ruleOption(rules, 'morphPairing');
+  for (const b of grantedBondsByMorph(items, (id) => gd.item(id), { mode, bondOk: (id) => !!gd.bond(id) })) {
+    if (!out.includes(b)) out.push(b);
   }
   return out;
 }
@@ -65,11 +62,11 @@ function membership(gd, ps) {
   for (const p of boardChess) {
     const base = gd.baseIdOf(p.id);
     const golden = gd.isGolden(p.id);
-    for (const b of pieceBonds(gd, p)) { add(onBoard, b, base); add(onBoardVariant, b, `${base}|${golden ? 1 : 0}`); }
+    for (const b of pieceBonds(gd, p, ps.m?.rules)) { add(onBoard, b, base); add(onBoardVariant, b, `${base}|${golden ? 1 : 0}`); }
   }
   for (const p of handChess) {
     const base = gd.baseIdOf(p.id);
-    for (const b of pieceBonds(gd, p)) add(inHand, b, base);
+    for (const b of pieceBonds(gd, p, ps.m?.rules)) add(inHand, b, base);
   }
   return { onBoard, onBoardVariant, inHand, goldenOnBoard: boardChess.filter((p) => gd.isGolden(p.id)).length };
 }
@@ -116,6 +113,19 @@ export function computeBonds(gd, ps) {
   for (const id of gd.bondIds) {
     if (gd.modeInactiveBonds.has(id)) continue;
     raw[id] = rawCount(gd, id, mem, ps);
+  }
+  // Marisa Rhodes: donate distinct board heads to already activated core bonds, without granting membership.
+  // This PREP count also feeds the public/private views and the BattleSpec; layer mirroring is a separate rule.
+  const rhodeId = gd.bond('bond_x_marisa_rhodeShip') ? 'bond_x_marisa_rhodeShip' : 'rhodeShip';
+  const donateMin = gd.bond(rhodeId)?.bb?.field_donate_min;
+  const rhodeBoard = onBoard.get(rhodeId);
+  if (Number.isInteger(donateMin) && donateMin > 0 && raw[rhodeId] != null && rhodeBoard?.size >= donateMin) {
+    for (const id of Object.keys(raw)) {
+      const bond = gd.bond(id);
+      if (!bond.isCore || tierFor(bond, raw[id]) < 1) continue;
+      const own = onBoard.get(id);
+      for (const base of rhodeBoard) if (!own?.has(base)) raw[id]++;
+    }
   }
   // 调和: +1 to core bonds with ≥ 1 real board member while it is active
   const harmony = gd.bond(HARMONY_BOND);

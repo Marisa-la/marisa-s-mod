@@ -88,6 +88,7 @@ import { recordError, setBattleSource } from '../diag.js';
 import { loadBrowserSim } from './simLoader.js';
 import { InPageSimHost, WorkerSimHost } from './simHost.js';
 import { trackCombat, combineCombat } from './metrics.js';
+import { createBattleTiming, battleTimingEnabled } from './timing.js';
 import { t } from '../../../shared/i18n.js';
 export { loadBrowserSim, SIM_DATA_FILES } from './simLoader.js';
 
@@ -157,7 +158,7 @@ const SIM_LOGGER = Object.freeze({
  * @param {{ net: any, store: any, loadSim?: () => Promise<{ spec: any, ds: any }>, now?: () => number,
  *   raf?: (fn: (t: number) => void) => any, caf?: (h: any) => void, setInterval?: Function, clearInterval?: Function,
  *   doc?: { hidden?: boolean, addEventListener?: Function } | null, logger?: object,
- *   combatMetrics?: boolean, createHost?: Function }} deps
+ *   combatMetrics?: boolean, createHost?: Function, battleTiming?: boolean, timingLog?: Function }} deps
  * `combatMetrics` true/false pins the 作战统计 meter for a test. Omit it and call setCombatMetrics (the settings
  * screen does; the default is off). A Worker host never attaches the meter.
  */
@@ -179,6 +180,14 @@ export function createBattleRunner(deps) {
   /** the content set the page is downloading now (content.js contentSet: its cs while loading), else null */
   const loadingContent = deps.loadingContent || (() => { const c = appContentSet.get(); return c.status === 'loading' ? c.cs : null; });
   const vanillaCs = deps.vanillaCs || (() => { try { return store?.get?.()?.content?.vanilla ?? null; } catch { return null; } });
+  // Battle-entry latency segmentation (SP_BATTLE_TIMING; docs/UPGRADE-0.3.1-REVIEW.md §T1.6): observational only,
+  // default off — a null `timing` turns every mark below into a no-op. `deps.battleTiming` pins it on for a test or
+  // the report harness; `deps.timingLog` receives the records.
+  const timing = createBattleTiming({
+    now,
+    enabled: () => (deps.battleTiming != null ? deps.battleTiming === true : battleTimingEnabled()),
+    log: deps.timingLog,
+  });
 
   const listeners = new Map();
   const emit = (type, payload) => {
@@ -265,9 +274,13 @@ export function createBattleRunner(deps) {
    * The simulation for a spec's content `cs` (see the header): the original content's (loaded from /data/) or a room's
    * content set (its checked data, content.js contentFor); one at a time — another content loads it again.
    */
-  function ensureSim(cs = null) {
+  /** The content set a spec's `cs` asks this page to simulate on (null: the original content) — ensureSim's `want`. */
+  const simWant = (cs) => {
     const vanilla = vanillaCs();
-    const want = typeof cs === 'string' && vanilla != null && cs !== vanilla ? cs : null;
+    return typeof cs === 'string' && vanilla != null && cs !== vanilla ? cs : null;
+  };
+  function ensureSim(cs = null) {
+    const want = simWant(cs);
     if (simP && simCs === want) return simP;
     simCs = want;
     const p = (want ? contentFor(want).then((content) => {
@@ -688,6 +701,7 @@ export function createBattleRunner(deps) {
     publishState();
     try { e.battle.drainEvents(); } catch { /* the view starts from the meta + this frame */ }
     emit('snap', frameOf(e));
+    timing?.noteShown(e.battleId);
     schedule();
   }
 
@@ -706,6 +720,7 @@ export function createBattleRunner(deps) {
 
   async function onStart(msg) {
     if (!msg || typeof msg !== 'object' || !msg.spec || typeof msg.battleId !== 'string') return;
+
     const speed = Number(msg.speed) > 0 ? Number(msg.speed) : 2;
     const seq = ++startSeq;
     const prep = pending.get(msg.battleId);
@@ -762,6 +777,7 @@ export function createBattleRunner(deps) {
       // view from the field meta); the event batches of the current sliced step (stepEntry)
       held: [], stale: false, slices: [],
     };
+    timing?.noteStart(msg);
     pending.set(e.battleId, e);
     loading = e;
     publishState();
@@ -779,6 +795,7 @@ export function createBattleRunner(deps) {
     const wanted = () => pending.get(e.battleId) === e && (e.seq === startSeq || e.authoritative || !!e.endReason);
     try {
       let sim;
+      timing?.noteLoad(e.battleId, !(simP && simCs === simWant(e.spec.cs)));
       try { sim = await ensureSim(e.spec.cs); } catch (err) {
         console.warn('[runner] simulation unavailable', err);
         recordError('runner', err, 'simulation unavailable');
@@ -794,9 +811,11 @@ export function createBattleRunner(deps) {
           : new InPageSimHost();
         if (e.host.remote) {
           await e.host.load(sim.cs, sim.content);
+          timing?.noteSim(e.battleId);
           if (!wanted()) return;
           await e.host.start(e.spec);
-        } else { e.host.sim = sim; e.host.start(e.spec, { logger }); }
+        } else { timing?.noteSim(e.battleId); e.host.sim = sim; e.host.start(e.spec, { logger }); }
+        timing?.noteBuilt(e.battleId);
         battle = e.host.battle;
       } catch (err) {
         if (e.host?.remote) failWorker(e, err);
@@ -816,6 +835,7 @@ export function createBattleRunner(deps) {
       if (e.endReason) await endBattle(e);
       // silent catch-up to the field's clock before it is shown (a reconnect / observing a running field) — for the view
       // asked for; a superseded authority catches up in the background (advance)
+      timing?.noteCatchup(e.battleId);
       while (!battle.finished && e.seq === startSeq && targetTick(e, clock()) - battle.tickCount > ticksPerFrameCap(e.speed)) {
         const n = Math.min(PREPARE_SLICE, targetTick(e, clock()) - battle.tickCount);
         await stepEntry(e, n);
@@ -825,6 +845,7 @@ export function createBattleRunner(deps) {
         await yieldFrame();
         if (!wanted() || e.failed) return;
       }
+      timing?.noteCatchupEnd(e.battleId);
       pending.delete(e.battleId);
       entries.set(e.battleId, e);
       evict();
@@ -840,6 +861,7 @@ export function createBattleRunner(deps) {
       if (entries.get(e.battleId) !== e) e.host?.stop();
       if (pending.get(e.battleId) === e) pending.delete(e.battleId);
       if (loading === e) { loading = null; publishState(); }
+      timing?.drop(e.battleId);
     }
   }
 
@@ -918,6 +940,8 @@ export function createBattleRunner(deps) {
     offs.push(net.on('b.end', onEnd));
     // the session is back (reconnect / resume): results lost with the old socket go out again
     offs.push(net.on('status', (st) => { if (st && st.status === 'online') redeliver(); }));
+    // SP_BATTLE_TIMING (default off): S1 opens with a room.state that carries the room's content set
+    if (timing) offs.push(net.on('room.state', (m) => timing.noteRoomState(m)));
   }
   // phase changes: combat fields live until the next prep; leaving the match drops everything
   let lastPhase = null;
@@ -947,6 +971,8 @@ export function createBattleRunner(deps) {
   }
   if (doc && typeof doc.addEventListener === 'function') {
     doc.addEventListener('visibilitychange', () => { if (hidden()) return; flushHidden(); schedule(); });
+    // SP_BATTLE_TIMING: the page going away mid-preparation still gets its records out
+    if (timing) doc.addEventListener('pagehide', () => timing.flush());
   }
 
   return {
@@ -1036,6 +1062,7 @@ export function createBattleRunner(deps) {
     reshow() { if (cur) show(cur); },
     /** Test / debug hooks. */
     _entries: entries,
+    _timing: timing,
     _frame: frame,
     _pump: pump,
     onStart, onPool, onEnd, clear, ensureSim, redeliver, setPaused,

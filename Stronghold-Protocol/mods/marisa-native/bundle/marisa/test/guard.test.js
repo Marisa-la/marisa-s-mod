@@ -162,8 +162,46 @@ test('Rhodes feedback is bounded with an injured incantation medic and a real ad
   h.b.heal(healer, u, 50);
   const feedback = h.hooksOf('damaged').slice(start).filter(c => tags(c, 'bond:bond_x_marisa_rhodeShip'));
   assert.equal(feedback.length, 1, 'one outer strike, no recursive extra strike');
+  // Keep the renderer's canonical origin intact when build-tests namespaces the gameplay bond ids.
+  const origin = 'bond:rhode' + 'Ship';
+  assert.ok(h.eventsOf('dmg').some(e => e[5] === origin), 'the real healing strike carries its bond visual origin');
   assert.ok(h.hooksOf('heal').some(c => c.source === u && c.opts?.tags?.includes('incantation')), 'incantation feedback really happened');
   h.run(5); clean(h);
+});
+
+for (const [label, fourth, expected] of [
+  ['three members', null, [0, 1, 1, 2, 2, 3]],
+  ['four distinct members', 'chess_char_5_04_a', [1, 2, 3, 4, 5, 6]],
+  ['three members plus an elite duplicate', `${AMIYA}_b`, [0, 1, 1, 2, 2, 3]],
+]) test(`Rhodes mirror applies field stacking efficiency: ${label}`, () => {
+  const h = field({
+    bonds: {
+      bond_x_marisa_rhodeShip: { active: true, count: fourth ? 4 : 3, tier: 2, layers: 0 },
+      lateranoShip: { active: true, count: 2, tier: 1, layers: 0 },
+    },
+    units: [
+      { uid: 2, chessId: 'chess_char_4_26_a', row: 11, col: 4 },
+      { uid: 3, chessId: 'chess_x_marisa_kalts2_a', row: 10, col: 7 },
+      { uid: 9, chessId: 'chess_char_3_21_a', row: 10, col: 5 },
+      ...(fourth ? [{ uid: 4, chessId: fourth, row: 11, col: 7 }] : []),
+    ],
+  });
+  h.step();
+  const source = h.unit(9), state = h.b.getPlayer('p1');
+  assert.ok(source.alive && source.deployed, 'the non-member source is actually on the field');
+  const observed = [];
+  for (let i = 0; i < 6; i++) {
+    assert.equal(h.b.addLayers('p1', 'lateranoShip', 1, 'test', { source }), 1);
+    observed.push(state.bonds.bond_x_marisa_rhodeShip.layers);
+  }
+  assert.deepEqual(observed, expected, 'real mirrored gains retain half-layer fractions below four members');
+  assert.equal(state.bonds.lateranoShip.layers, 6, 'the triggering bond gains the same six layers in every lineup');
+  if (fourth === 'chess_char_5_04_a') {
+    h.b.retreat(h.unit(4));
+    assert.equal(h.b.addLayers('p1', 'lateranoShip', 2, 'test', { source }), 2);
+    assert.equal(state.bonds.bond_x_marisa_rhodeShip.layers, 7, 'withdrawing the fourth member immediately restores 50% efficiency');
+  }
+  clean(h);
 });
 
 for (const [label, mods, cultivate] of [

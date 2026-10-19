@@ -75,14 +75,19 @@ export function BondStrip({ bonds, layersDisabled = false, onOpen, openId = null
           <span class="bslot__count bslot__off">${t('本局禁用')}</span>
         </div>`;
       }
+      // Rhodes has two ability tiers but reaches full stacking efficiency at four distinct members.
+      const isRhode = b.bondId === 'rhodeShip' || b.bondId === 'bond_x_marisa_rhodeShip';
+      const rhodeEffMin = isRhode ? rec?.bb?.field_eff_member_min : null;
       const next = nextThreshold(b.count ?? 0, th);
+      const displayThreshold = rhodeEffMin || (next ?? th[th.length - 1] ?? '-');
+      const atMax = rhodeEffMin ? (b.count ?? 0) >= rhodeEffMin : next == null;
       return html`<div key=${b.bondId} role="listitem" data-bond=${b.bondId} data-harmony=${b.harmony > 0 ? b.harmony : null}
           class=${cx('bslot', b.active && 'is-active', openId === b.bondId && 'is-open')}>
         <${BondDisc} name=${rec?.name || b.bondId} icon=${bondIconUrl(m, b.bondId)} layers=${rec?.noStack ? undefined : b.layers ?? 0}
           tier=${b.tier ?? 0} maxTier=${Math.max(1, th.length)} active=${!!b.active} size="sm" showName=${true}
           layersDisabled=${layersDisabled} onClick=${() => onOpen(b.bondId)}
-          title=${`${rec?.name || b.bondId} ${b.count ?? 0}/${next ?? th[th.length - 1] ?? '-'}${b.harmony > 0 ? t('（含调和 +{harmony}）', { harmony: b.harmony }) : ''}`} />
-        <span class=${cx('bslot__count', 'num', next == null && 'is-max')}>${b.count ?? 0}<small>/${next ?? th[th.length - 1] ?? '-'}</small></span>
+          title=${`${rec?.name || b.bondId} ${b.count ?? 0}/${displayThreshold}${b.harmony > 0 ? t('（含调和 +{harmony}）', { harmony: b.harmony }) : ''}`} />
+        <span class=${cx('bslot__count', 'num', atMax && 'is-max')}>${b.count ?? 0}<small>/${displayThreshold}</small></span>
       </div>`;
     })}
     ${sorted.length > shown.length ? html`<span class="bstrip__more num">+${sorted.length - shown.length}</span>` : null}
@@ -104,7 +109,7 @@ export function BondStrip({ bonds, layersDisabled = false, onOpen, openId = null
  *   note, no 在场 count and no 当前效果 block (its numbers would promise an effect the mode never gives; the bond text stays).
  *   `entry.harmony` (the server's bond views: the +1 调和 added to `count`): 在场 n（含调和 +1） and the 调和 row
  */
-export function BondPopup({ bondId, entry, priv, banned = [], onClose, onMember, place = null, over = false, beside = null, owner = null, off = false }) {
+export function BondPopup({ bondId, entry, priv, banned = [], onClose, onMember, place = null, over = false, beside = null, owner = null, off = false, morphMode = 'official' }) {
   const b = data.lookup('bonds', bondId);
   if (!b) return null;
   const count = entry?.count ?? 0;
@@ -116,7 +121,7 @@ export function BondPopup({ bondId, entry, priv, banned = [], onClose, onMember,
   const dd = { chess: data.get('chess'), backups: data.get('backups') };
   const getChess = diyGetter((id) => data.lookup('chess', id), priv, dd);
   const pieceRecord = (p) => (p && p.diy && typeof p.diy === 'object' ? diyRecordFor(data.lookup('chess', p.id), p.diy, dd) : null) || getChess(p.id);
-  const members = bondMembers(b, priv, banned, getChess, (id) => data.lookup('items', id), pieceRecord);
+  const members = bondMembers(b, priv, banned, getChess, (id) => data.lookup('items', id), pieceRecord, morphMode);
   // 补位: the stand-in a row shows (a 自选 row is its operator already)
   const rawChess = (id) => data.lookup('chess', id);
   const siOf = (mb) => (mb.diy ? null : memberStandIn(priv, rawChess(mb.id), data.get('backups'), rawChess));

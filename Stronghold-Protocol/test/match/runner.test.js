@@ -30,7 +30,7 @@ function fakeNet() {
   return n;
 }
 
-function rig({ hidden = false, combatMetrics = true, pinMetrics = true, createHost = null } = {}) {
+function rig({ hidden = false, combatMetrics = true, pinMetrics = true, createHost = null, battleTiming = undefined, timingLog = null } = {}) {
   let t = 1000;
   const frames = [];
   const intervals = [];
@@ -38,7 +38,8 @@ function rig({ hidden = false, combatMetrics = true, pinMetrics = true, createHo
   const net = fakeNet();
   const store = createStore(initialState);
   // Existing cases pin the meter on, which is what the PR asserted. pinMetrics false leaves the production default
-  // (off) so a test can drive setCombatMetrics. createHost stands in for a Worker sim.
+  // (off) so a test can drive setCombatMetrics. createHost stands in for a Worker sim. battleTiming / timingLog pin
+  // the SP_BATTLE_TIMING recorder (docs/UPGRADE-0.3.1-REVIEW.md §T1.6) and capture its records.
   const deps = {
     net, store, doc,
     now: () => t,
@@ -51,6 +52,8 @@ function rig({ hidden = false, combatMetrics = true, pinMetrics = true, createHo
   };
   if (pinMetrics) deps.combatMetrics = combatMetrics;
   if (createHost) deps.createHost = createHost;
+  if (battleTiming != null) deps.battleTiming = battleTiming;
+  if (timingLog) deps.timingLog = timingLog;
   const runner = createBattleRunner(deps);
   const feed = { snaps: [], evs: [], fields: [] };
   runner.on('snap', (s) => feed.snaps.push(s));
@@ -636,6 +639,56 @@ test('a Worker host never attaches the combat meter, even when the setting is on
     assert.equal(msg.combatMetrics, undefined);
     assert.notEqual(msg.t, 'b.result', 'a null compact result is not sent');
   }
+  r.runner.dispose();
+});
+
+test('SP_BATTLE_TIMING: off by default; pinned on — exactly one s1–s6 record per battle via the log sink, a resend adds none', async () => {
+  // the production default: no recorder at all (the switch is the URL / a global — neither set here)
+  const off = rig();
+  assert.equal(off.runner._timing, null);
+  off.runner.dispose();
+
+  const records = [];
+  const battle = {
+    finished: true, time: 0, tickCount: 0, leakedCount: 0, flags: {}, allyUnits: [],
+    snapshot: () => ({ t: 0 }),
+    drainEvents: () => [],
+    fieldMeta: () => ({ units: [] }),
+    getPlayer: () => null,
+  };
+  const host = {
+    remote: true,
+    battle,
+    meter: { lp: 0 },
+    async load() {},
+    async start() {},
+    async syncPool() {},
+    stop() {},
+    progress: () => ({ gt: 0, killed: 0, total: 0, done: true, leaks: 0 }),
+    compactResult: () => null,
+    step: () => Promise.resolve({ ticks: 0, slices: [] }),
+    forceEnd: () => Promise.resolve(),
+  };
+  const r = rig({ createHost: () => host, battleTiming: true, timingLog: (...a) => records.push(a[1]) });
+  assert.ok(r.runner._timing, 'pinned on');
+  // S1 opens with a room.state carrying the room's content set; the spec names the same cs
+  r.net.emit('room.state', { content: { cs: 'cs-1', vanilla: false } });
+  const spec = { fieldId: 'n:timing', kind: 'normal', players: [{ playerId: 'p_0' }], cs: 'cs-1' };
+  const start = { battleId: 'timing-1', fieldId: 'n:timing', kind: 'normal', spec, authoritative: true, speed: 2 };
+  r.net.emit('b.start', start);
+  await r.settle();
+  // the manual clock never moves: every measured segment is 0 — what is asserted is the record itself
+  assert.equal(records.length, 1, 'one record per battle');
+  assert.deepEqual(records[0], {
+    cs: 'cs-1', fieldId: 'n:timing', battleId: 'timing-1', cold: true,
+    seg: { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 },
+  });
+  // a resend of the same battle never re-opens the record (one per battle)
+  r.net.emit('b.start', start);
+  await r.settle();
+  assert.equal(records.length, 1);
+  // the marks ride along only: the wire traffic stays the battle's own (progress; a null result is not sent)
+  assert.ok(r.net.sent.every((m) => m.t === 'b.progress'));
   r.runner.dispose();
 });
 

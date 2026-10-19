@@ -29,13 +29,17 @@ ${body}
   </form>\x60;
 }
 `).replace('|| charId;', '|| labels[charId] || charId;'));
-for(const p of ['public/js/render/units.js','public/js/render/textures.js','public/js/render/fx/kinds.js','public/js/render/fx/simfx.js','public/js/ui/diyModel.js','public/js/ui/skinModel.js','public/js/ui/fieldHost.js','public/js/ui/gameComponents.js','public/js/screens/loadout.js','public/js/ui/detailPanel.js','public/css/screens/loadout.css','public/css/screens/game-panels.css','server/sim/snapshot.js'])write(p,read(p));
-let units=fs.readFileSync(path.join(game,'public/js/render/units.js'),'utf8');
-write('public/js/render/units.js',units.replace('  char_4217_makoto: Object.freeze({','  char_x_marisa_makoto: Object.freeze({'));
+// Presentation compatibility now lives in the current game files. Copying the frozen 0.3.0
+// presentation here would undo upstream skins, effects and declarative-trait support.
 const css=read('public/css/screens/lobby.css'),marker='/* Room-bound Marisa MOD options.';
 const cssPath=path.join(game,'public/css/screens/lobby.css');
-const current=fs.readFileSync(cssPath,'utf8').split(marker)[0];
-fs.writeFileSync(cssPath,current+'\n'+css.slice(css.indexOf(marker))+'\n.mod-manager { max-width:100%; }\n');
+const existing=fs.readFileSync(cssPath,'utf8');
+const at=existing.indexOf(marker);
+// Rebuild the marker section idempotently. Keeping everything before the current section and normalising its
+// trailing whitespace makes the build re-runnable: a naive `split(marker)[0] + '\n'` appended one blank line on
+// every run, so a rebuild always dirtied lobby.css.
+const head=(at>=0?existing.slice(0,at):existing).replace(/\s+$/,'')+'\n\n\n\n';
+fs.writeFileSync(cssPath,head+css.slice(css.indexOf(marker))+'\n.mod-manager { max-width:100%; }\n');
 for(const lang of ['en','ja','ko','zh-TW']){
  const p='public/i18n/'+lang+'.json';
  const target=JSON.parse(fs.readFileSync(path.join(game,p),'utf8')),source=JSON.parse(read(p));
@@ -43,8 +47,3 @@ for(const lang of ['en','ja','ko','zh-TW']){
  write(p,JSON.stringify(target,null,2)+'\n');
 }
 console.log('Native manager and presentation migrated');
-const skinFile=path.join(game,'public/js/ui/skinModel.js');
-let skin=fs.readFileSync(skinFile,'utf8');
-skin=skin.replace("  const value = { ...m, chars };", "  if(chars.char_4217_makoto&&chars.char_x_marisa_makoto)chars.char_x_marisa_makoto=chars.char_4217_makoto;\n  const value = { ...m, chars };");
-skin=skin.replace('  if (g) return g;', "  if (g) return g === 'char_x_marisa_makoto' ? 'char_4217_makoto' : g;").replace("return typeof chess?.charId === 'string' && chess.charId ? chess.charId : null;", "return chess?.charId === 'char_x_marisa_makoto' ? 'char_4217_makoto' : typeof chess?.charId === 'string' && chess.charId ? chess.charId : null;");
-fs.writeFileSync(skinFile,skin);

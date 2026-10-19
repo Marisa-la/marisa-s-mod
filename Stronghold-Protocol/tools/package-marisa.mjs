@@ -28,9 +28,9 @@ export function packageMarisa(root=ROOT){
  const paths=[...new Set(git.stdout.toString().split('\0').filter(Boolean))];
  console.log('Planning runtime and referenced art');
  const p=plan(root,{paths,allowDirty:true,scan:false,measure:false});
- if(p.version!=='0.3.0'||p.problems.length)throw Error(p.problems.join('\n')||'Expected game 0.3.0');
+ if(p.version!=='0.3.1'||p.problems.length)throw Error(p.problems.join('\n')||'Expected game 0.3.1');
  const extras=['scripts/start-marisa.cmd','tools/mod-test.mjs','tools/marisa-test-runtime.mjs',
-  'public/dev/render-demo.html','public/dev/render-demo.js','docs/MARISA-0.3.0.md'];
+  'public/dev/render-demo.html','public/dev/render-demo.js','docs/MARISA-0.3.1.md'];
  const pluginRoot=path.join(root,'mods/marisa-native/bundle');
  const pluginFiles=listTree(pluginRoot,'marisa').map(f=>'plugins/'+f);
  const libs=[...productionModules(root),...listTree(root,'public/vendor')];
@@ -53,24 +53,24 @@ export function packageMarisa(root=ROOT){
   const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
   fs.writeFileSync(path.join(stage,'package.json'),JSON.stringify(playerPackageJson(pkg,new Set(files)),null,2)+'\n');
   writePackIndex(stage,path.join(stage,'packs/index.json'));
-  fs.writeFileSync(path.join(stage,'MARISA-PACKAGE.md'),fs.readFileSync(path.join(root,'docs/MARISA-0.3.0.md')));
-  fs.writeFileSync(path.join(stage,'MOD-PACKAGE.json'),JSON.stringify({format:1,mod:'marisa',version:'0.3.0',kind,upstream:'c24e17eec3af1e6dedfa9935a6d15245cf2f4586',install:kind==='full'?'fresh-directory':'manual-overlay-on-vanilla-0.3.0',artFiles:art.length},null,2)+'\n');
+  fs.writeFileSync(path.join(stage,'MARISA-PACKAGE.md'),fs.readFileSync(path.join(root,'docs/MARISA-0.3.1.md')));
+  fs.writeFileSync(path.join(stage,'MOD-PACKAGE.json'),JSON.stringify({format:1,mod:'marisa',version:'0.3.1',kind,upstream:'b3deebdae4a92642c007d217a1a4573e5d3612c5',install:kind==='full'?'fresh-directory':'manual-overlay-on-vanilla-0.3.1',artFiles:art.length},null,2)+'\n');
   const staged=listTree(stage,'',{junk:true});
   const errors=importProblems(stage,staged);
   if(errors.length)throw Error(errors.join('\n'));
   for(const rel of staged)if(/(?:^|\/)\.git(?:\/|$)|(?:^|\/)\.cache\/|\.env$|service\.env\.cmd$/.test(rel))throw Error('Unexpected local file: '+rel);
   const manifest=new Map(staged.filter(inManifest).map(rel=>[rel,digestFile(path.join(stage,rel))]));
-  fs.writeFileSync(path.join(stage,'MANIFEST.json'),manifestText({app:'0.3.0',files:manifest}));
-  const name='Stronghold-Protocol-0.3.0-marisa-'+kind+'.zip',zip=path.join(dist,name);
+  fs.writeFileSync(path.join(stage,'MANIFEST.json'),manifestText({app:'0.3.1',files:manifest}));
+  const name='Stronghold-Protocol-0.3.1-marisa-'+kind+'.zip',zip=path.join(dist,name);
   if(fs.existsSync(zip))throw Error('Release already exists: '+zip);
   zipFolder(work,zip);
   results.push({name,...digestFile(zip),files:staged.length+1,artFiles:art.length,stage});
   console.log(name+': '+JSON.stringify(results.at(-1)));
  }
- const pluginName='marisa-0.3.0.zip';fs.copyFileSync(path.join(root,'plugins/_dist',pluginName),path.join(dist,pluginName));
+ const pluginName='marisa-0.3.1.zip';fs.copyFileSync(path.join(root,'plugins/_dist',pluginName),path.join(dist,pluginName));
  results.push({name:pluginName,...digestFile(path.join(dist,pluginName))});
  fs.writeFileSync(path.join(dist,'SHA256SUMS.txt'),results.map(r=>r.sha256+'  '+r.name+'\n').join(''));
- fs.writeFileSync(path.join(dist,'packages.json'),JSON.stringify({mod:'marisa',version:'0.3.0',packages:results.map(({stage:_,...r})=>r)},null,2)+'\n');
+ fs.writeFileSync(path.join(dist,'packages.json'),JSON.stringify({mod:'marisa',version:'0.3.1',packages:results.map(({stage:_,...r})=>r)},null,2)+'\n');
  return results;
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))packageMarisa();

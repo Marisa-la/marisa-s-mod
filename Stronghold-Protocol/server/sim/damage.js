@@ -426,6 +426,12 @@ export function applyHpLoss(battle, source, target, amount, dmg, mark) {
     // 'r' is display-only (official red number). Absent on every other hit, so the tuple stays four elements.
     const ev = ['dmg', target.id, Math.round(amount), shown];
     if (mark === 'r') ev.push('r');
+    // Rhodes healing strikes have their own bond effect. Without this origin, the renderer can mistake an unowned
+    // hit in a skill's cast frame for that skill and attach its looping target effects to every struck enemy.
+    if (dmg.tags?.some(tag => tag === 'bond:rhodeShip' || tag === 'bond:bond_x_marisa_rhodeShip')) {
+      if (ev.length === 4) ev.push(null); // reserve the optional damage-number mark at [4]
+      ev.push('bond:rhodeShip');
+    }
     battle._ev(ev);
   }
   if (battle._hooks.damaged) battle.emit('damaged', { source: hs, target, amount, type: dmg ? dmg.type : 'true', dmg, credit: source });

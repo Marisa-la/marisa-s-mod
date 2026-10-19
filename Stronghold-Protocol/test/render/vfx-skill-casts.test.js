@@ -11,8 +11,8 @@ import { skillPlan, dirFamilies, planKeys } from '../../public/js/render/vfx/ski
 
 const KEYS = ['wind', 'wind_up', 'wind_down', 'wind_left', 'aura_back', 'aura_front', 'other_buff', 'appear_dome', 'appear_dome_02',
   's2_mode_cast', 's2_mode_hit', 'def_cast', 'def_hit', 'nova_cast', 'nova_hit', 'mend_cast', 'mend_hit', 'fin_cast', 'fin_hit', 'beam_cast',
-  'beam_aim', 'beam_hit', 'rep_cast', 'rep_hit', 'slash_cast', 'end_cast', 'end_hit', 'g_hit', 'g_heal', 'g_enemy'];
-const LOOPING = new Set(['wind', 'wind_up', 'wind_down', 'wind_left', 'other_buff']);
+  'beam_aim', 'beam_hit', 'rep_cast', 'rep_hit', 'slash_cast', 'end_cast', 'end_hit', 'nova_buff', 'g_hit', 'g_heal', 'g_enemy'];
+const LOOPING = new Set(['wind', 'wind_up', 'wind_down', 'wind_left', 'other_buff', 'nova_buff']);
 const blow = (k, ev = 2) => ({ effects: [k], oneshot: 1, startEvent: ev, endEvent: 3, directionType: 0 });
 const cast = (k, node, ability, extra = {}) => ({ role: 'start', keys: [k], from: 'UberEffectEmitter._castEffects', node, ability, startEvent: 'ON_CAST_START', endEvent: 'ON_CAST_END', oneshot: true, list: 'cast', ...extra });
 const hit = (k, node, ability, extra = {}) => ({ role: 'hit', keys: [k], from: 'UberEffectEmitter._hitEffects', node, ability, endEvent: 'ON_CAST_END', oneshot: true, list: 'hit', ...extra });
@@ -29,7 +29,8 @@ function makeIndex() {
     skchr_appear_2: { mode: 1, rootClass: 'MultiAppearSkill', rootAbility: 'AbilitySequenceGroup', projectiles: [], uses: [
       cast('appear_dome', 'Damage', 'MeleeAttack'), cast('appear_dome_02', 'Damage', 'MeleeAttack')] },
     // an instant CastSkill whose kit deals the damage (no 'atk'): a melee ability's cast and hit
-    skchr_nova_1: { mode: null, rootClass: 'CastSkill', rootAbility: 'MeleeAttack', projectiles: [], uses: [cast('nova_cast', 'sk', 'MeleeAttack'), hit('nova_hit', 'sk', 'MeleeAttack')] },
+    skchr_nova_1: { mode: null, rootClass: 'CastSkill', rootAbility: 'MeleeAttack', projectiles: [], uses: [cast('nova_cast', 'sk', 'MeleeAttack'), hit('nova_hit', 'sk', 'MeleeAttack'),
+      { role: 'loop', keys: ['nova_buff'], from: 'MeleeAttack._activeBuffs', node: 'sk', on: 'targets', buff: 'nova', life: { type: 'INFINITY' } }] },
     // an instant CastSkill heal of the kit's
     skchr_mend_2: { mode: null, rootClass: 'CastSkill', rootAbility: 'Heal', projectiles: [], uses: [cast('mend_cast', 'sk', 'Heal'), hit('mend_hit', 'sk', 'Heal')] },
     // a lasting skill with a final attack at its end
@@ -158,6 +159,40 @@ describe('a lasting skill\'s own cast at its start (R8)', () => {
 });
 
 describe('kit hits of a skill without an attack event (R13)', () => {
+  test('Rhodes healing damage in an open skill window never inherits its hit or target buff', async () => {
+    const { w, spawned, handles, view, frame } = await setup();
+    const u = view(1, 'char_3_nova', 5);
+    const t = view(2, 'enemy_1', 6);
+    frame();
+    w.skill(u, true);
+    // The heal hook deals a separate Rhodes strike before the skill's own kit damage in this frame.
+    assert.equal(w.damage(t, 'arts', null, 1, 'bond:rhodeShip'), false, 'the bond keeps its own procedural hit');
+    assert.equal(count(spawned, 'nova_hit'), 0, 'no borrowed skill impact');
+    assert.equal(count(spawned, 'nova_buff'), 0, 'no borrowed looping target buff');
+    w.damage(t, 'arts', null, 1);
+    assert.equal(count(spawned, 'nova_hit'), 1, 'the actual skill hit still plays');
+    assert.equal(count(spawned, 'nova_buff'), 1, 'its target buff still plays');
+    w.skill(u, false);
+    frame();
+    assert.equal(handles.filter(h => h.key === 'nova_buff' && h.alive).length, 0, 'the actual buff stops with the skill');
+  });
+
+  test('Rhodes healing damage does not consume a pending attack and still triggers damage-taken effects', async () => {
+    const { w, spawned, view, frame } = await setup();
+    const u = view(1, 'char_3_nova', 5);
+    const t = view(2, 'enemy_1', 6);
+    frame();
+    let hurt = 0;
+    w.skills.trigger = () => { hurt++; };
+    w.attack(u, t, 'none', 1);
+    assert.equal(w.damage(t, 'arts', u, 1, 'bond:rhodeShip'), false);
+    assert.equal(count(spawned, 'def_hit'), 0, 'the bond cannot borrow the pending attack impact');
+    assert.equal(w.melee.get(t.id).hitT, null, 'the pending attack has not been consumed');
+    w.damage(t, 'phys', u, 1);
+    assert.equal(count(spawned, 'def_hit'), 1, 'the actual attack still lands');
+    assert.equal(hurt, 2, 'both instances are real HP damage');
+  });
+
   test('an instant CastSkill: its cast once, its hit on every enemy the kit damaged between 1 and 0 (not a claimed one)', async () => {
     const { w, spawned, view, frame } = await setup();
     const u = view(1, 'char_3_nova', 5);

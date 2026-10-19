@@ -9,6 +9,20 @@ const json=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const names=['chess','enemies','tokens','stages','waves','bonds','garrisons','items','bands','effects','choices','config','backups'];
 const base=Object.fromEntries(names.map(n=>[n,json(path.join(game,'data',n+'.json'))]));
 const full=Object.fromEntries(names.map(n=>[n,json(path.join(legacy,'data/mods/marisa',n+'.json'))]));
+// The archived MOD tables include the whole 0.3.0 roster. Rebase only upstream changes whose old value the MOD
+// retained; replacing the table wholesale would discard either the 0.3.1 fixes or the author's balance changes.
+// The checked-in delta was extracted from the official v0.3.0/v0.3.1 data, so rebuilding needs no Git or network.
+const upstream=json(path.join(import.meta.dirname,'upstream-0.3.1.json'));
+const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+for(const change of upstream.changes){
+ let parent=full[change.file];
+ for(const key of change.path.slice(0,-1))parent=parent?.[key];
+ if(!parent||typeof parent!=='object')continue; // A parent removed by the MOD remains removed.
+ const key=change.path.at(-1),present=Object.hasOwn(parent,key),had=Object.hasOwn(change,'before');
+ if(present!==had||present&&!same(parent[key],change.before))continue;
+ if(Object.hasOwn(change,'after'))parent[key]=structuredClone(change.after);
+ else delete parent[key];
+}
 const prefixes={chess:'chess_x',bonds:'bond_x',garrisons:'garrison_x',bands:'band_x',effects:'effect_x',tokens:'token_x'};
 export const aliases={};
 for(const [file,prefix]of Object.entries(prefixes))for(const id of Object.keys(full[file]))if(!Object.hasOwn(base[file],id)){
@@ -78,8 +92,8 @@ fs.writeFileSync(path.join(game,'shared/plugins/marisaProfile.js'),profile);
 const {MARISA_SETTINGS}=await import(pathToFileURL(path.join(game,'shared/plugins/marisaProfile.js')).href);
 if(Object.keys(MARISA_SETTINGS).length>32)throw Error('Too many native settings');
 const manifest={
- '$schema':'../../schemas/plugin.schema.json',manifest:2,id:'marisa',name:'魔理沙追加 MOD',version:'0.3.0',app:'>=0.3.0 <0.4.0',api:1,class:'script',scope:['room'],
- authors:['Marisa-la','Ruyl114514'],description:{zh:'魔理沙追加干员、罗德岛盟约与鲲策略；原生插件管理器逐项配置。需要配套的 0.3.0 兼容补丁。',en:'Marisa operators, Rhodes Island alliance and Kun strategy. Requires the 0.3.0 compatibility patch.'},
+ '$schema':'../../schemas/plugin.schema.json',manifest:2,id:'marisa',name:'魔理沙追加 MOD',version:'0.3.1',app:'>=0.3.1 <0.4.0',api:1,class:'script',scope:['room'],
+ authors:['Marisa-la','Ruyl114514'],description:{zh:'魔理沙追加干员、罗德岛盟约与鲲策略；原生插件管理器逐项配置。需要配套的 0.3.1 兼容补丁。',en:'Marisa operators, Rhodes Island alliance and Kun strategy. Requires the 0.3.1 compatibility patch.'},
  permissions:['data.add','data.patch','sim.code','meta.code'],budget:1000000,data:['data/profile.json'],settings:MARISA_SETTINGS,entry:{sim:'sim/index.js',meta:'sim/index.js'},
 };
 fs.writeFileSync(path.join(plugin,'plugin.json'),JSON.stringify(manifest,null,2)+'\n');

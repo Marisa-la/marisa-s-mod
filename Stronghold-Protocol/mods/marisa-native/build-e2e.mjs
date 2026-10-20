@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import {game} from './build-profile.mjs';
+let s=fs.readFileSync(game+'/test/ui/plugins-sandbox.e2e.test.js','utf8');
+s=s.replace("{Client,hasChrome,sleep}","{Client,hasChrome,sleep,ROOT}");
+s=s.replace(/ const f=scriptFixture\(t,\{mode:'sandbox'\}\);f.put\('training',[\s\S]*?\n const previous=/," const previous=");
+s=s.replaceAll("pluginsDir:f.pluginsDir","pluginsDir:ROOT+'/plugins'").replaceAll('training','marisa').replaceAll('plugins-sandbox','marisa-native');
+s=s.replace(" assert.match(await host.page.$eval('[data-plugin=\"marisa\"]',e=>e.textContent),/脚本（沙箱）/);",` assert.match(await host.page.$eval('[data-plugin="marisa"]',e=>e.textContent),/脚本（沙箱）/);
+ await host.page.waitForSelector('[data-testid="marisa-settings"]');
+ await host.page.evaluate(()=>{for(const e of document.querySelectorAll('.mod-manager__group'))e.open=true;});
+ const route='[data-testid="marisa-settings"] .mod-manager__list--operators select';
+ await host.page.select(route,'diy');
+ await host.page.waitForFunction(()=>!document.querySelector('[data-testid="marisa-settings"] button[type="submit"]').disabled);
+ await host.page.$eval('[data-testid="marisa-settings"] button[type="submit"]',e=>e.scrollIntoView({block:'center'}));
+ await host.click('[data-testid="marisa-settings"] button','应用设置');
+ for(const c of [host,guest])await c.page.waitForFunction(()=>globalThis.__SP__.store.get().room.content.plugins.find(p=>p.id==='marisa')?.settings?.add_makoto==='diy');
+ await host.page.screenshot({path:ROOT+'/test/e2e/out/marisa-native-manager.png'});
+`);
+fs.writeFileSync(game+'/test/ui/marisa-native.e2e.test.js',s);

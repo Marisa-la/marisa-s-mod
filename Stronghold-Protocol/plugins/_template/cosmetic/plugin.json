@@ -1,0 +1,46 @@
+{
+  "manifest": 2,
+  "name": {
+    "zh": "外观插件模板",
+    "en": "Cosmetic plugin template"
+  },
+  "description": {
+    "zh": "原创棋盘格头像与短提示音示例，模型和立绘引用本安装素材。",
+    "en": "Original checkerboard avatar and short tone; model and portrait reference installed assets."
+  },
+  "version": "0.1.0",
+  "app": ">=0.3.0 <0.4.0",
+  "api": 1,
+  "class": "cosmetic",
+  "scope": [
+    "room",
+    "personal"
+  ],
+  "authors": [
+    "your name"
+  ],
+  "license": "CC0-1.0",
+  "permissions": [
+    "assets.override"
+  ],
+  "assets": {
+    "chars": {
+      "char_102_texas": {
+        "avatar": "media/sample.png",
+        "portrait": {
+          "ref": "char_112_siege"
+        },
+        "spine": {
+          "ref": "char_112_siege"
+        }
+      }
+    },
+    "audio": {
+      "voice": {
+        "char_102_texas": {
+          "select": "media/sample.ogg"
+        }
+      }
+    }
+  }
+}

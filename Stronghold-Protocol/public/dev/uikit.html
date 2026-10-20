@@ -1,0 +1,68 @@
+<!doctype html>
+<!--
+  UI kit gallery (visual QA for js/ui/components.js + css). Standalone page: /dev/uikit.html
+  Renders every design-system component in its variants/states. Uses real bond icons from
+  data/assets.json + names from data/bonds.json when those files exist.
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UI Kit · 卫戍协议：盟约</title>
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" media="print" data-web-fonts
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Oxanium:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" />
+  <link rel="stylesheet" href="/fonts/fonts.css" />
+  <link rel="stylesheet" href="/css/theme.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <link rel="stylesheet" href="/css/emotes.css" />
+  <link rel="stylesheet" href="/css/devices.css" />
+  <script type="importmap">
+    { "imports": { "preact": "/vendor/preact.module.js", "preact/hooks": "/vendor/hooks.module.js", "htm": "/vendor/htm.module.js" } }
+  </script>
+  <style>
+    /* Gallery page only: a scrollable document instead of the fixed game viewport. */
+    html { font-size: clamp(40px, calc(100vw / 19.2), 140px); }
+    body { overflow: auto; height: auto; min-height: 100%; }
+    .kit { position: relative; z-index: 1; max-width: 18rem; margin: 0 auto; padding: .5rem .5rem 1.2rem; }
+    .kit-bg { position: fixed; inset: 0; z-index: 0; }
+    .kit-head { display: flex; align-items: flex-end; justify-content: space-between; gap: .4rem; padding-bottom: .24rem; border-bottom: 1px solid var(--line); }
+    .kit-head h1 { font-size: .5rem; font-weight: 900; letter-spacing: .06em; }
+    .kit-head h1 em { font-style: normal; color: var(--mint-500); }
+    .kit-sec { margin-top: .5rem; }
+    .kit-sec > h2 { display: flex; align-items: baseline; gap: .14rem; font-size: .24rem; margin-bottom: .2rem; }
+    .kit-sec > h2 .num { color: var(--mint-500); font-size: .18rem; }
+    .row { display: flex; flex-wrap: wrap; align-items: center; gap: .24rem; margin-bottom: .22rem; }
+    .row--top { align-items: flex-start; }
+    .cap { font-size: .12rem; color: var(--text-dim); font-family: var(--font-display); letter-spacing: .14em; text-transform: uppercase; width: 100%; margin-bottom: -.1rem; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .24rem; }
+    .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .24rem; }
+    .swatch { display: flex; flex-direction: column; gap: .06rem; width: 1.3rem; font-size: .12rem; color: var(--text-lo); }
+    .swatch i { display: block; height: .56rem; border: 1px solid var(--line); }
+    .swatch b { color: var(--text-hi); font-family: var(--font-num); font-weight: 700; font-size: .14rem; }
+    .type-demo > * { display: block; margin-bottom: .08rem; }
+    .stack { display: flex; flex-direction: column; gap: .14rem; min-width: 3rem; }
+    /* 13 emotes */
+    .emo-stage { position: relative; height: 3.3rem; padding: .2rem; background: rgba(0, 0, 0, .35); border: 1px solid var(--line); }
+    .emo-stage .ewheel { position: absolute; left: .2rem; bottom: .2rem; }
+    .emo-team { position: absolute; left: 3.7rem; top: .3rem; display: flex; flex-direction: column; gap: .14rem; }
+    .emo-row { position: relative; display: flex; align-items: center; gap: .1rem; }
+    .emo-row .pav { width: .8rem; height: .8rem; display: grid; place-items: center; background: linear-gradient(135deg, #2c4a40, #10201b); border: 1px solid var(--line-2); font-size: .3rem; font-weight: 900; color: var(--mint-400); }
+    .emo-row .ebubble { position: absolute; left: calc(100% + .06rem); top: 50%; transform: translateY(-50%); }
+    .emo-bubbles { display: flex; flex-wrap: wrap; gap: .3rem; align-items: center; }
+    .emo-bubbles figure { margin: 0; display: flex; flex-direction: column; align-items: flex-start; gap: .06rem; font-size: .11rem; color: var(--text-dim); }
+    .emo-cat { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .12rem .2rem; }
+    .emo-cat figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: .04rem; font-size: .1rem; color: var(--text-dim); font-family: var(--font-mono); text-align: center; }
+    .emo-cat .cell { width: .85rem; height: .85rem; padding: .07rem; box-sizing: border-box; background: rgba(255, 255, 255, .12); border-radius: .08rem; }
+    .emo-cat h3 { grid-column: 1 / -1; font-size: .14rem; color: var(--text-md); margin: .06rem 0 0; }
+  </style>
+</head>
+<body>
+  <div class="app-bg kit-bg" aria-hidden="true"></div>
+  <div id="kit"></div>
+  <script src="/js/webFonts.js" defer></script>
+<script type="module" src="/dev/uikit.js"></script>
+</body>
+</html>

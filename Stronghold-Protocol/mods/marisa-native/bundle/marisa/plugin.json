@@ -1,0 +1,349 @@
+{
+  "$schema": "../../schemas/plugin.schema.json",
+  "manifest": 2,
+  "id": "marisa",
+  "name": "魔理沙追加 MOD",
+  "version": "0.3.1",
+  "app": ">=0.3.1 <0.4.0",
+  "api": 1,
+  "class": "script",
+  "scope": [
+    "room"
+  ],
+  "authors": [
+    "Marisa-la",
+    "Ruyl114514"
+  ],
+  "description": {
+    "zh": "魔理沙追加干员、罗德岛盟约与鲲策略；原生插件管理器逐项配置。需要配套的 0.3.1 兼容补丁。",
+    "en": "Marisa operators, Rhodes Island alliance and Kun strategy. Requires the 0.3.1 compatibility patch."
+  },
+  "permissions": [
+    "data.add",
+    "data.patch",
+    "sim.code",
+    "meta.code"
+  ],
+  "budget": 1000000,
+  "data": [
+    "data/profile.json"
+  ],
+  "settings": {
+    "existing": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "启用已有干员改动",
+        "en": "Enable existing operator changes"
+      }
+    },
+    "additions": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "启用追加干员",
+        "en": "Enable added operators"
+      }
+    },
+    "bonds": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "启用追加盟约",
+        "en": "Enable added alliances"
+      }
+    },
+    "rhode": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "罗德岛",
+        "en": "Rhodes Island"
+      }
+    },
+    "strategies": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "启用追加策略",
+        "en": "Enable added strategies"
+      }
+    },
+    "kun": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "鲲",
+        "en": "Kun"
+      }
+    },
+    "op_bldsk": {
+      "type": "enum",
+      "options": [
+        "mod",
+        "original"
+      ],
+      "default": "mod",
+      "label": {
+        "zh": "char_171_bldsk"
+      }
+    },
+    "op_kalts": {
+      "type": "enum",
+      "options": [
+        "mod",
+        "original"
+      ],
+      "default": "mod",
+      "label": {
+        "zh": "char_003_kalts"
+      }
+    },
+    "op_monstr": {
+      "type": "enum",
+      "options": [
+        "mod",
+        "original"
+      ],
+      "default": "mod",
+      "label": {
+        "zh": "char_4179_monstr"
+      }
+    },
+    "op_radian": {
+      "type": "enum",
+      "options": [
+        "mod",
+        "original"
+      ],
+      "default": "mod",
+      "label": {
+        "zh": "char_4195_radian"
+      }
+    },
+    "op_closur": {
+      "type": "enum",
+      "options": [
+        "mod",
+        "original"
+      ],
+      "default": "mod",
+      "label": {
+        "zh": "char_4228_closur"
+      }
+    },
+    "op_mcnist": {
+      "type": "enum",
+      "options": [
+        "mod",
+        "original"
+      ],
+      "default": "mod",
+      "label": {
+        "zh": "char_4230_mcnist"
+      }
+    },
+    "op_aglna2": {
+      "type": "enum",
+      "options": [
+        "mod",
+        "original"
+      ],
+      "default": "mod",
+      "label": {
+        "zh": "char_1015_aglna2"
+      }
+    },
+    "op_kalts2": {
+      "type": "enum",
+      "options": [
+        "mod",
+        "original"
+      ],
+      "default": "mod",
+      "label": {
+        "zh": "char_1052_kalts2"
+      }
+    },
+    "add_makoto": {
+      "type": "enum",
+      "options": [
+        "shop",
+        "diy",
+        "disabled"
+      ],
+      "default": "shop",
+      "label": {
+        "zh": "char_x_marisa_makoto"
+      }
+    },
+    "add_amiya3": {
+      "type": "enum",
+      "options": [
+        "shop",
+        "diy",
+        "disabled"
+      ],
+      "default": "shop",
+      "label": {
+        "zh": "char_x_marisa_amiya3"
+      }
+    },
+    "m_lateranoShip_makoto": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "lateranoShip / char_x_marisa_makoto"
+      }
+    },
+    "m_preciShip_makoto": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "preciShip / char_x_marisa_makoto"
+      }
+    },
+    "m_indomShip_makoto": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "indomShip / char_x_marisa_makoto"
+      }
+    },
+    "m_siracusaShip_aglna2": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "siracusaShip / char_1015_aglna2"
+      }
+    },
+    "m_swiftShip_aglna2": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "swiftShip / char_1015_aglna2"
+      }
+    },
+    "m_miraShip_aglna2": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "miraShip / char_1015_aglna2"
+      }
+    },
+    "m_visiShip_amiya3": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "visiShip / char_x_marisa_amiya3"
+      }
+    },
+    "m_emptyShip_kalts2": {
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "zh": "emptyShip / char_1052_kalts2"
+      }
+    },
+    "n_bldsk": {
+      "type": "enum",
+      "options": [
+        "default",
+        "yes",
+        "no"
+      ],
+      "default": "default",
+      "label": {
+        "zh": "bond_x_marisa_rhodeShip / char_171_bldsk"
+      }
+    },
+    "n_kalts2": {
+      "type": "enum",
+      "options": [
+        "default",
+        "yes",
+        "no"
+      ],
+      "default": "default",
+      "label": {
+        "zh": "bond_x_marisa_rhodeShip / char_1052_kalts2"
+      }
+    },
+    "n_amiya3": {
+      "type": "enum",
+      "options": [
+        "default",
+        "yes",
+        "no"
+      ],
+      "default": "default",
+      "label": {
+        "zh": "bond_x_marisa_rhodeShip / char_x_marisa_amiya3"
+      }
+    },
+    "n_kalts": {
+      "type": "enum",
+      "options": [
+        "default",
+        "yes",
+        "no"
+      ],
+      "default": "default",
+      "label": {
+        "zh": "bond_x_marisa_rhodeShip / char_003_kalts"
+      }
+    },
+    "n_monstr": {
+      "type": "enum",
+      "options": [
+        "default",
+        "yes",
+        "no"
+      ],
+      "default": "default",
+      "label": {
+        "zh": "bond_x_marisa_rhodeShip / char_4179_monstr"
+      }
+    },
+    "n_radian": {
+      "type": "enum",
+      "options": [
+        "default",
+        "yes",
+        "no"
+      ],
+      "default": "default",
+      "label": {
+        "zh": "bond_x_marisa_rhodeShip / char_4195_radian"
+      }
+    },
+    "n_closur": {
+      "type": "enum",
+      "options": [
+        "default",
+        "yes",
+        "no"
+      ],
+      "default": "default",
+      "label": {
+        "zh": "bond_x_marisa_rhodeShip / char_4228_closur"
+      }
+    },
+    "n_mcnist": {
+      "type": "enum",
+      "options": [
+        "default",
+        "yes",
+        "no"
+      ],
+      "default": "default",
+      "label": {
+        "zh": "bond_x_marisa_rhodeShip / char_4230_mcnist"
+      }
+    }
+  },
+  "entry": {
+    "sim": "sim/index.js",
+    "meta": "sim/index.js"
+  }
+}

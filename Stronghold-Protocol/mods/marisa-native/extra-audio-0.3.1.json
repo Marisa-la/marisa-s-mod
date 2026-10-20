@@ -1,0 +1,181 @@
+{
+  "units": {
+    "char_1037_amiya3": {
+      "attack": "/assets/audio/sfx/player/p_atk/p_atk_amdermicfr_n.mp3",
+      "hit": "/assets/audio/sfx/player/p_imp/p_imp_amdermic_n.mp3",
+      "skill": "/assets/audio/sfx/battle/b_char/b_char_atkboost.mp3",
+      "skills": {
+        "0": "/assets/audio/sfx/battle/b_char/b_char_atkboost.mp3",
+        "1": "/assets/audio/sfx/battle/b_char/b_char_atkboost.mp3"
+      },
+      "attacks": {
+        "1": "/assets/audio/sfx/player/p_atk/p_atk_amdermic_h.mp3"
+      },
+      "hits": {
+        "1": "/assets/audio/sfx/player/p_imp/p_imp_amdermic_h.mp3"
+      },
+      "pools": {
+        "attack": "battle.ON_ABILITY_ON.char_1037_amiya3.attack.0",
+        "hit": "battle.ON_PROJECTILE_HIT.projectile_chr_amiya3"
+      },
+      "attackPools": {
+        "1": "battle.ON_ABILITY_START.char_1037_amiya3.attack.2"
+      },
+      "hitPools": {
+        "1": "battle.ON_ABILITY_HIT.char_1037_amiya3.attack.2"
+      }
+    },
+    "char_4217_makoto": {
+      "attack": "/assets/audio/sfx/player/p_atk/p_atk_pskptldr_n.mp3",
+      "hit": "/assets/audio/sfx/player/p_imp/p_imp_pskptldr_n.mp3",
+      "skill": "/assets/audio/sfx/battle/b_char/b_char_atkboost.mp3",
+      "skills": {
+        "0": "/assets/audio/sfx/battle/b_char/b_char_atkboost.mp3",
+        "1": "/assets/audio/sfx/battle/b_char/b_char_atkboost.mp3",
+        "2": "/assets/audio/sfx/battle/b_char/b_char_atkboost.mp3"
+      },
+      "attacks": {
+        "0": "/assets/audio/sfx/player/p_atk/p_atk_pskptldrh_d.mp3",
+        "1": "/assets/audio/sfx/player/p_atk/p_atk_pskptldr_h.mp3",
+        "2": "/assets/audio/sfx/player/p_atk/p_atk_pskptldr_s1.mp3"
+      },
+      "hits": {
+        "1": "/assets/audio/sfx/player/p_imp/p_imp_pskptldr_h.mp3"
+      },
+      "pools": {
+        "attack": "battle.ON_ABILITY_START.char_4217_makoto.attack",
+        "hit": "battle.ON_ABILITY_HIT.char_4217_makoto.attack"
+      },
+      "attackPools": {
+        "0": "battle.ON_ABILITY_START.char_4217_makoto.attack.1.1",
+        "1": "battle.ON_ABILITY_START.char_4217_makoto.attack.2",
+        "2": "battle.ON_ABILITY_ON.char_4217_makoto.attack.3"
+      },
+      "hitPools": {
+        "1": "battle.ON_ABILITY_HIT.char_4217_makoto.attack.2"
+      }
+    }
+  },
+  "pools": {
+    "battle.ON_ABILITY_ON.char_1037_amiya3.attack.0": {
+      "maxSoundAllowed": 2,
+      "popOldest": true,
+      "sounds": {
+        "player/p_atk/p_atk_amdermicfr_n.mp3": {
+          "minPitch": 0.8,
+          "maxPitch": 1.2,
+          "delay": 0
+        }
+      }
+    },
+    "battle.ON_PROJECTILE_HIT.projectile_chr_amiya3": {
+      "maxSoundAllowed": 2,
+      "popOldest": true,
+      "sounds": {
+        "player/p_imp/p_imp_amdermic_n.mp3": {
+          "minPitch": 0.8,
+          "maxPitch": 1.2,
+          "delay": 0
+        }
+      }
+    },
+    "battle.ON_ABILITY_START.char_1037_amiya3.attack.2": {
+      "maxSoundAllowed": 2,
+      "popOldest": true,
+      "sounds": {
+        "player/p_atk/p_atk_amdermic_h.mp3": {
+          "minPitch": 0.8,
+          "maxPitch": 1.2,
+          "delay": 0
+        }
+      }
+    },
+    "battle.ON_ABILITY_HIT.char_1037_amiya3.attack.2": {
+      "maxSoundAllowed": 2,
+      "popOldest": true,
+      "sounds": {
+        "player/p_imp/p_imp_amdermic_h.mp3": {
+          "minPitch": 0.8,
+          "maxPitch": 1.2,
+          "delay": 0
+        }
+      }
+    },
+    "battle.ON_ABILITY_START.char_4217_makoto.attack": {
+      "maxSoundAllowed": 2,
+      "popOldest": true,
+      "sounds": {
+        "player/p_atk/p_atk_pskptldr_n.mp3": {
+          "minPitch": 0.8,
+          "maxPitch": 1.2,
+          "delay": 0
+        }
+      }
+    },
+    "battle.ON_ABILITY_HIT.char_4217_makoto.attack": {
+      "maxSoundAllowed": 2,
+      "popOldest": true,
+      "sounds": {
+        "player/p_imp/p_imp_pskptldr_n.mp3": {
+          "minPitch": 0.8,
+          "maxPitch": 1.2,
+          "delay": 0
+        }
+      }
+    },
+    "battle.ON_ABILITY_START.char_4217_makoto.attack.1.1": {
+      "maxSoundAllowed": 2,
+      "popOldest": true,
+      "sounds": {
+        "player/p_atk/p_atk_pskptldrh_d.mp3": {
+          "minPitch": 0.9,
+          "maxPitch": 1.1,
+          "delay": 0
+        }
+      }
+    },
+    "battle.ON_ABILITY_START.char_4217_makoto.attack.2": {
+      "maxSoundAllowed": 2,
+      "popOldest": true,
+      "sounds": {
+        "player/p_atk/p_atk_pskptldr_h.mp3": {
+          "minPitch": 0.8,
+          "maxPitch": 1.2,
+          "delay": 0
+        }
+      }
+    },
+    "battle.ON_ABILITY_ON.char_4217_makoto.attack.3": {
+      "maxSoundAllowed": 2,
+      "popOldest": true,
+      "sounds": {
+        "player/p_atk/p_atk_pskptldr_s1.mp3": {
+          "minPitch": 1,
+          "maxPitch": 1,
+          "delay": 0
+        },
+        "player/p_atk/p_atk_pskptldr_s2.mp3": {
+          "minPitch": 1,
+          "maxPitch": 1,
+          "delay": 0
+        },
+        "player/p_atk/p_atk_pskptldr_s3.mp3": {
+          "minPitch": 1,
+          "maxPitch": 1,
+          "delay": 0
+        }
+      }
+    },
+    "battle.ON_ABILITY_HIT.char_4217_makoto.attack.2": {
+      "maxSoundAllowed": 2,
+      "popOldest": true,
+      "sounds": {
+        "player/p_imp/p_imp_pskptldr_h.mp3": {
+          "minPitch": 0.8,
+          "maxPitch": 1.2,
+          "delay": 0
+        }
+      }
+    }
+  }
+}

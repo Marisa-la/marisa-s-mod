@@ -1,0 +1,1194 @@
+{
+  "source": "marisa-s-mod replacement package, upstream base v0.2.4; custom gameplay intentionally retained",
+  "operators": [
+    {
+      "chessId": "chess_char_4217_makoto_a",
+      "goldenId": "chess_char_4217_makoto_b",
+      "charId": "char_4217_makoto",
+      "tier": 4,
+      "shopSortId": 22,
+      "bonds": [
+        "lateranoShip",
+        "preciShip",
+        "indomShip"
+      ],
+      "garrisonIds": [
+        "garrison_makoto_switch_a",
+        "garrison_makoto_kill_a"
+      ],
+      "price": 3,
+      "sellPrice": 1,
+      "skillIndex": 1,
+      "normalStatus": {
+        "phase": 2,
+        "level": 1,
+        "skillLevel": 4,
+        "equipLevel": 0
+      },
+      "eliteStatus": {
+        "phase": 2,
+        "level": 60,
+        "skillLevel": 7,
+        "equipLevel": 1
+      }
+    },
+    {
+      "chessId": "chess_char_1015_aglna2_a",
+      "goldenId": "chess_char_1015_aglna2_b",
+      "charId": "char_1015_aglna2",
+      "tier": 5,
+      "shopSortId": 23,
+      "bonds": [
+        "siracusaShip",
+        "swiftShip",
+        "miraShip"
+      ],
+      "garrisonIds": [
+        "garrison_aglna2_takeoff_a",
+        "garrison_aglna2_float_a"
+      ],
+      "price": 4,
+      "sellPrice": 1,
+      "skillIndex": 1,
+      "normalStatus": {
+        "phase": 2,
+        "level": 1,
+        "skillLevel": 4,
+        "equipLevel": 0
+      },
+      "eliteStatus": {
+        "phase": 2,
+        "level": 60,
+        "skillLevel": 7,
+        "equipLevel": 1
+      }
+    },
+    {
+      "chessId": "chess_char_1052_kalts2_a",
+      "goldenId": "chess_char_1052_kalts2_b",
+      "charId": "char_1052_kalts2",
+      "tier": 5,
+      "shopSortId": 27,
+      "bonds": [
+        "emptyShip",
+        "rhodeShip"
+      ],
+      "garrisonIds": [],
+      "price": 4,
+      "sellPrice": 1,
+      "skillIndex": 0,
+      "normalStatus": {
+        "phase": 2,
+        "level": 1,
+        "skillLevel": 4,
+        "equipLevel": 0
+      },
+      "eliteStatus": {
+        "phase": 2,
+        "level": 60,
+        "skillLevel": 7,
+        "equipLevel": 1
+      }
+    },
+    {
+      "chessId": "chess_char_1037_amiya3_a",
+      "goldenId": "chess_char_1037_amiya3_b",
+      "charId": "char_1037_amiya3",
+      "tier": 3,
+      "shopSortId": 29,
+      "bonds": [
+        "visiShip",
+        "rhodeShip"
+      ],
+      "garrisonIds": [
+        "garrison_amiya3_allowance_a"
+      ],
+      "price": 3,
+      "sellPrice": 1,
+      "skillIndex": 0,
+      "normalStatus": {
+        "phase": 2,
+        "level": 1,
+        "skillLevel": 4,
+        "equipLevel": 0
+      },
+      "eliteStatus": {
+        "phase": 2,
+        "level": 60,
+        "skillLevel": 7,
+        "equipLevel": 1
+      }
+    }
+  ],
+  "records": {
+    "bonds": {
+      "rhodeShip": {
+        "bondId": "rhodeShip",
+        "name": "罗德岛",
+        "identifier": 24,
+        "isCore": false,
+        "bondType": "REGULAR",
+        "bondOrder": 2,
+        "powerIdList": [],
+        "iconId": "icon_rhodeShip",
+        "activeCount": 1,
+        "thresholds": [
+          1,
+          2
+        ],
+        "maxCount": null,
+        "thresholdTemplate": "count_threshold_upward",
+        "countMode": "BOARD",
+        "countsHand": false,
+        "countsGoldenOnly": false,
+        "activeType": "BATTLE",
+        "isActiveInDeck": false,
+        "noStack": false,
+        "weight": 10,
+        "maxInactiveBondCount": -1,
+        "layerMilestones": [],
+        "desc": "【罗德岛】干员攻击范围内的其他非【罗德岛】干员叠加任何盟约层数时，同时叠加相等的【罗德岛】层数（战斗内即时结算；整备期在回合结束时统一结算）\n场上所有我方干员受治疗效率提升（每5层+1%）\n我方干员受到的持续性伤害不超过5秒\n我方干员被治疗时，按实际被治疗的量对其周围8格造成弱点伤害（治疗量×层数×10%）\n<在场2名不同【罗德岛】干员>全场每5秒获得一次治疗，治疗量为【罗德岛】层数；溢出的治疗量等量转化为攻击力（不超过自身攻击力的100%，2秒内不再溢出则消失），治疗间隔随层数缩短\n【罗德岛】的层数不会超过已激活的其他盟约中最高的层数\n【罗德岛】的叠层效率随在场成员数提升：在场4名以下50%、4名及以上100%\n<在场4名不同【罗德岛】干员>【罗德岛】干员可为此时已触发的主盟约提供在场人数（自身不享受该盟约的加成）",
+        "descRaw": "【罗德岛】干员攻击范围内的其他非【罗德岛】干员叠加任何盟约层数时，同时叠加相等的【罗德岛】层数<@autochess.gray>（战斗内</><@ba.vup>即时结算</><@autochess.gray>；整备期在</><@ba.vup>回合结束时</><@autochess.gray>统一结算）</>\n场上所有我方干员<@ba.vup>受治疗效率</>提升<@ba.acrem>（每5层+1%）</>\n我方干员受到的<@ba.vup>持续性伤害不超过5秒</>\n我方干员被治疗时，按实际被治疗的量对其周围8格造成<@ba.vup>弱点伤害</><@autochess.gray>（治疗量×层数×10%）</>\n<在场<@autochess.dgreen>2</>名不同【罗德岛】干员>全场每<@autochess.dgreen>5</>秒获得一次治疗，治疗量为【罗德岛】层数；溢出的治疗量等量转化为<@ba.vup>攻击力</><@autochess.gray>（不超过自身攻击力的100%，2秒内不再溢出则消失）</>，治疗间隔随层数缩短\n【罗德岛】的<@ba.vup>层数</>不会超过已激活的其他盟约中最高的层数\n【罗德岛】的<@ba.vup>叠层效率</>随在场成员数提升：在场<@autochess.dgreen>4</>名以下<@autochess.dgreen>50%</>、<@autochess.dgreen>4</>名及以上<@autochess.dgreen>100%</>\n<在场<@autochess.dgreen>4</>名不同【罗德岛】干员>【罗德岛】干员可为此时已触发的主盟约<@ba.vup>提供在场人数</>（自身不享受该盟约的加成）",
+        "effectId": "bondeffect_rhode",
+        "effectName": "罗德岛",
+        "effectDesc": "【罗德岛】干员攻击范围内的其他非【罗德岛】干员叠加任何盟约层数时，同时叠加相等的【罗德岛】层数（战斗内即时结算；整备期在回合结束时统一结算）\n场上所有我方干员受治疗效率提升（每5层+1%）\n我方干员受到的持续性伤害不超过5秒\n我方干员被治疗时，按实际被治疗的量对其周围8格造成弱点伤害（治疗量×层数×10%）\n<在场2名不同【罗德岛】干员>全场每5秒获得一次治疗，治疗量为【罗德岛】层数；溢出的治疗量等量转化为攻击力（不超过自身攻击力的100%，2秒内不再溢出则消失），治疗间隔随层数缩短\n【罗德岛】的层数不会超过已激活的其他盟约中最高的层数\n【罗德岛】的叠层效率随在场成员数提升：在场4名以下50%、4名及以上100%\n<在场4名不同【罗德岛】干员>【罗德岛】干员可为此时已触发的主盟约提供在场人数（自身不享受该盟约的加成）",
+        "effectDescRaw": "【罗德岛】干员攻击范围内的其他非【罗德岛】干员叠加任何盟约层数时，同时叠加相等的【罗德岛】层数<@autochess.gray>（战斗内</><@ba.vup>即时结算</><@autochess.gray>；整备期在</><@ba.vup>回合结束时</><@autochess.gray>统一结算）</>\n场上所有我方干员<@ba.vup>受治疗效率</>提升<@ba.acrem>（每5层+1%）</>\n我方干员受到的<@ba.vup>持续性伤害不超过5秒</>\n我方干员被治疗时，按实际被治疗的量对其周围8格造成<@ba.vup>弱点伤害</><@autochess.gray>（治疗量×层数×10%）</>\n<在场<@autochess.dgreen>2</>名不同【罗德岛】干员>全场每<@autochess.dgreen>5</>秒获得一次治疗，治疗量为【罗德岛】层数；溢出的治疗量等量转化为<@ba.vup>攻击力</><@autochess.gray>（不超过自身攻击力的100%，2秒内不再溢出则消失）</>，治疗间隔随层数缩短\n【罗德岛】的<@ba.vup>层数</>不会超过已激活的其他盟约中最高的层数\n【罗德岛】的<@ba.vup>叠层效率</>随在场成员数提升：在场<@autochess.dgreen>4</>名以下<@autochess.dgreen>50%</>、<@autochess.dgreen>4</>名及以上<@autochess.dgreen>100%</>\n<在场<@autochess.dgreen>4</>名不同【罗德岛】干员>【罗德岛】干员可为此时已触发的主盟约<@ba.vup>提供在场人数</>（自身不享受该盟约的加成）",
+        "effectDescParams": [],
+        "bb": {
+          "heal_eff_per_step": 0.01,
+          "heal_eff_step": 5,
+          "dot_duration_cap": 5,
+          "weakness_scale": 0.1,
+          "weakness_radius": 1,
+          "aura_interval_min": 0.5,
+          "aura_interval_max": 5,
+          "aura_l_max": 100,
+          "aura_atk_cap_ratio": 1,
+          "aura_decay_sec": 2,
+          "field_eff_per_member": 0.25,
+          "field_eff_max": 1,
+          "field_donate_min": 4,
+          "field_eff_low": 0.5,
+          "field_eff_member_min": 4
+        },
+        "bbStr": {},
+        "buffs": [
+          {
+            "key": "MOD_bond_rhode",
+            "bb": {
+              "heal_eff_per_step": 0.01,
+              "heal_eff_step": 5,
+              "dot_duration_cap": 5,
+              "weakness_scale": 0.1,
+              "weakness_radius": 1,
+              "aura_interval_min": 0.5,
+              "aura_interval_max": 5,
+              "aura_l_max": 100,
+              "aura_atk_cap_ratio": 1,
+              "aura_decay_sec": 2,
+              "field_eff_per_member": 0.25,
+              "field_eff_max": 1,
+              "field_eff_low": 0.5,
+              "field_eff_member_min": 4
+            },
+            "bbStr": {}
+          }
+        ],
+        "baseParams": [],
+        "perStackParams": [],
+        "members": [
+          "chess_char_1052_kalts2_a",
+          "chess_char_1037_amiya3_a",
+          "chess_char_4_26_a",
+          "chess_char_5_04_a",
+          "char_4195_radian",
+          "char_4228_closur",
+          "char_4230_mcnist",
+          "char_4179_monstr",
+          "char_003_kalts"
+        ],
+        "visibleMembers": [
+          "chess_char_1052_kalts2_a",
+          "chess_char_1037_amiya3_a",
+          "chess_char_4_26_a"
+        ],
+        "spec": {
+          "tiers": [
+            {
+              "need": "1 distinct",
+              "effect": "【罗德岛】干员攻击范围内的其他非【罗德岛】干员获得任何盟约层数 +n 时，rhodeShip 也 +n（不含自己、不含其他【罗德岛】干员）。"
+            },
+            {
+              "need": "1 distinct (always)",
+              "effect": "All our units: healing received x(1 + 0.01 * floor(L / 5)); damage-over-time they take is capped at 5 s."
+            },
+            {
+              "need": "1 distinct (on heal)",
+              "effect": "A healed unit deals weakness damage (weaknessRetype, items/battle.js) around its 8 tiles: healed * L * 0.1, credited to the healed unit."
+            },
+            {
+              "need": "2 distinct",
+              "effect": "Whole-field heal aura every 间隔(L) s; the amount is L; the overflow (amount - missing HP) becomes flat ATK 1:1, capped at 100% of the unit's ATK, dropped after 2 s without overflow."
+            },
+            {
+              "need": "1 distinct (always)",
+              "effect": "罗德岛的层数上限 = 已激活的其他盟约中最高的层数（每次加层时现算；没有其他已激活盟约时为 0）。"
+            },
+            {
+              "need": "1 distinct (always)",
+              "effect": "叠层效率 = 在场【罗德岛】干员数 × 25%（上限 100%）：1 名 25%、2 名 50%、3 名 75%、4 名及以上 100%。bb.field_eff_per_member / field_eff_max。"
+            },
+            {
+              "need": "4 distinct",
+              "effect": "在场 ≥ 4 名不同【罗德岛】干员时，罗德岛干员为此时已触发的主盟约提供在场人数（只计入人数、可把该主盟约顶到更高一档），自身不享受该盟约的加成。bb.field_donate_min。"
+            }
+          ],
+          "formulas": {
+            "interval": "interval(L) = 0.5 + (5 - 0.5) * (1 - sqrt(L / 100))",
+            "intervalAt": {
+              "L0": 5,
+              "L100": 0.5
+            },
+            "healEfficiency": "+1% per full 5 layers",
+            "weaknessDamage": "healed * L * 0.1"
+          },
+          "members": "凯尔希·思衡托 / 阿米娅(医疗) / 华法琳（既有 chess 记录）＋ 自选编队干员：电弧(char_4195_radian) / 可露希尔(char_4228_closur) / 机械师(char_4230_mcnist) / Mon3tr(char_4179_monstr) / 凯尔希(char_003_kalts) —— 后五位的成员身份在 data/backups.json `diy.operators[charId].bonds` 里。",
+          "implementedIn": "server/sim/content/bonds/addon/battle.js (buff key MOD_bond_rhode)"
+        }
+      }
+    },
+    "bands": {
+      "band_kun": {
+        "bandId": "band_kun",
+        "sortId": 41,
+        "name": "鲲",
+        "iconId": "icon_kun",
+        "modeTypeList": [
+          "SINGLE",
+          "MULTI"
+        ],
+        "totalHp": 24,
+        "effectId": "aceffect_band_kun",
+        "effectName": "化鲲为鹏（只因）",
+        "desc": "【化鲲为鹏（只因）】阿戈尔干员吞噬身前的干员达到3名时，令本次被吞噬击倒的干员原地复活，该【阿戈尔】干员起飞：不再阻挡地面单位，改为阻挡空中单位，可同时攻击地面与空中的敌人",
+        "descRaw": "【化鲲为鹏（只因）】阿戈尔干员吞噬身前的干员达到<@autochess.dgreen>3</>名时，令本次被吞噬击倒的干员<@ba.vup>原地复活</>，该【阿戈尔】干员<@ba.vup>起飞</>：<@autochess.gray>不再阻挡地面单位，改为阻挡空中单位，可同时攻击地面与空中的敌人</>",
+        "buffs": [
+          {
+            "key": "MOD_band_kun",
+            "bb": {
+              "devour_count": 3,
+              "revive_redeploy_cost": 0,
+              "liftoff": 1,
+              "block_fly": 1,
+              "hit_fly": 1
+            },
+            "bbStr": {
+              "key": "MOD_band_kun"
+            }
+          }
+        ],
+        "params": {
+          "devour_count": 3,
+          "revive_redeploy_cost": 0,
+          "liftoff": 1,
+          "block_fly": 1,
+          "hit_fly": 1,
+          "key": "MOD_band_kun"
+        },
+        "victorCount": 3,
+        "rewardModulus": 1,
+        "unlockDesc": null,
+        "bondIds": []
+      }
+    },
+    "effects": {
+      "bondeffect_rhode": {
+        "effectId": "bondeffect_rhode",
+        "effectType": "BOND",
+        "name": "罗德岛",
+        "desc": "【罗德岛】干员攻击范围内的其他非【罗德岛】干员叠加任何盟约层数时，同时叠加相等的【罗德岛】层数\n场上所有我方干员受治疗效率提升（每5层+1%）\n我方干员受到的持续性伤害不超过5秒\n我方干员被治疗时，按实际被治疗的量对其周围8格造成弱点伤害（治疗量×层数×10%）\n<在场2名不同【罗德岛】干员>全场每5秒获得一次治疗，治疗量为【罗德岛】层数；溢出的治疗量等量转化为攻击力（不超过自身攻击力的100%，2秒内不再溢出则消失），治疗间隔随层数缩短",
+        "descRaw": "【罗德岛】干员攻击范围内的其他非【罗德岛】干员叠加任何盟约层数时，同时叠加相等的【罗德岛】层数\n场上所有我方干员<@ba.vup>受治疗效率</>提升<@ba.acrem>（每5层+1%）</>\n我方干员受到的<@ba.vup>持续性伤害不超过5秒</>\n我方干员被治疗时，按实际被治疗的量对其周围8格造成<@ba.vup>弱点伤害</><@autochess.gray>（治疗量×层数×10%）</>\n<在场<@autochess.dgreen>2</>名不同【罗德岛】干员>全场每<@autochess.dgreen>5</>秒获得一次治疗，治疗量为【罗德岛】层数；溢出的治疗量等量转化为<@ba.vup>攻击力</><@autochess.gray>（不超过自身攻击力的100%，2秒内不再溢出则消失）</>，治疗间隔随层数缩短",
+        "counterType": "NONE",
+        "continuedRound": -1,
+        "decoIconId": null,
+        "enemyPrice": 0,
+        "buffs": [
+          {
+            "key": "MOD_bond_rhode",
+            "countType": "NONE",
+            "bb": {
+              "heal_eff_per_step": 0.01,
+              "heal_eff_step": 5,
+              "dot_duration_cap": 5,
+              "weakness_scale": 0.1,
+              "weakness_radius": 1,
+              "aura_interval_min": 0.5,
+              "aura_interval_max": 5,
+              "aura_l_max": 100,
+              "aura_atk_cap_ratio": 1,
+              "aura_decay_sec": 2,
+              "field_eff_per_member": 0.25,
+              "field_eff_max": 1,
+              "field_eff_low": 0.5,
+              "field_eff_member_min": 4
+            },
+            "bbStr": {}
+          }
+        ],
+        "params": {
+          "heal_eff_per_step": 0.01,
+          "heal_eff_step": 5,
+          "dot_duration_cap": 5,
+          "weakness_scale": 0.1,
+          "weakness_radius": 1,
+          "aura_interval_min": 0.5,
+          "aura_interval_max": 5,
+          "aura_l_max": 100,
+          "aura_atk_cap_ratio": 1,
+          "aura_decay_sec": 2
+        }
+      },
+      "aceffect_band_kun": {
+        "effectId": "aceffect_band_kun",
+        "effectType": "BAND_INITIAL",
+        "name": "化鲲为鹏（只因）",
+        "desc": "【化鲲为鹏（只因）】阿戈尔干员吞噬身前的干员达到3名时，令本次被吞噬击倒的干员原地复活，该【阿戈尔】干员起飞：不再阻挡地面单位，改为阻挡空中单位，可同时攻击地面与空中的敌人",
+        "descRaw": "【化鲲为鹏（只因）】阿戈尔干员吞噬身前的干员达到<@autochess.dgreen>3</>名时，令本次被吞噬击倒的干员<@ba.vup>原地复活</>，该【阿戈尔】干员<@ba.vup>起飞</>：<@autochess.gray>不再阻挡地面单位，改为阻挡空中单位，可同时攻击地面与空中的敌人</>",
+        "counterType": "NONE",
+        "continuedRound": -1,
+        "decoIconId": null,
+        "enemyPrice": 0,
+        "buffs": [
+          {
+            "key": "MOD_band_kun",
+            "countType": "NONE",
+            "bb": {
+              "devour_count": 3,
+              "revive_redeploy_cost": 0,
+              "liftoff": 1,
+              "block_fly": 1,
+              "hit_fly": 1
+            },
+            "bbStr": {
+              "key": "MOD_band_kun"
+            }
+          }
+        ],
+        "params": {
+          "devour_count": 3,
+          "revive_redeploy_cost": 0,
+          "liftoff": 1,
+          "block_fly": 1,
+          "hit_fly": 1,
+          "key": "MOD_band_kun"
+        }
+      }
+    },
+    "garrisons": {
+      "garrison_makoto_switch_a": {
+        "garrisonId": "garrison_makoto_switch_a",
+        "desc": "<战斗中>自身被击倒或替身与本体进行切换时，使已激活的【拉特兰】【不屈】层数各+2",
+        "descRaw": "<战斗中>自身被击倒或替身与本体进行切换时，使已激活的【拉特兰】【不屈】层数各+2",
+        "eventType": "IN_BATTLE",
+        "eventTypeDesc": "持续叠加",
+        "eventTypeIcon": "icon_bond",
+        "effectType": "ADD_BOND",
+        "effectKey": "act1autochess_gar_event_selfdead",
+        "battleRuneKey": "env_gbuff_new_with_verify",
+        "charLevel": 0,
+        "bb": {
+          "bond_add_count": 2
+        },
+        "bbStr": {
+          "key": "act1autochess_gar_event_selfdead",
+          "bond_type": "bond_by_id",
+          "bond_id": "lateranoShip,indomShip",
+          "bond_add_type": "by_count"
+        },
+        "owners": [
+          "chess_char_4217_makoto_a",
+          "chess_char_4217_makoto_b"
+        ]
+      },
+      "garrison_makoto_kill_a": {
+        "garrisonId": "garrison_makoto_kill_a",
+        "desc": "<战斗中>每击倒1名单位时，使已激活的【精准】层数+2；每回合由此获得的层数：普通不超过在场的【拉特兰】人数（不足3名或未激活时按3计），精锐上限24层",
+        "descRaw": "<战斗中>每击倒1名单位时，使已激活的【精准】层数+2；每回合由此获得的层数：普通不超过在场的【拉特兰】人数（不足3名或未激活时按3计），精锐上限24层",
+        "eventType": "IN_BATTLE",
+        "eventTypeDesc": "持续叠加",
+        "eventTypeIcon": "icon_bond",
+        "effectType": "ADD_BOND",
+        "effectKey": "act1autochess_gar_event_selfkillenemy",
+        "battleRuneKey": "env_gbuff_new_with_verify",
+        "charLevel": 0,
+        "bb": {
+          "bond_add_count": 2,
+          "kill_count": 1,
+          "cap_min": 3,
+          "cap_min_elite": 24,
+          "cap_by_bond": "lateranoShip"
+        },
+        "bbStr": {
+          "key": "act1autochess_gar_event_selfkillenemy",
+          "bond_type": "bond_by_id",
+          "bond_id": "preciShip",
+          "bond_add_type": "by_count"
+        },
+        "owners": [
+          "chess_char_4217_makoto_a",
+          "chess_char_4217_makoto_b"
+        ]
+      },
+      "garrison_aglna2_float_a": {
+        "garrisonId": "garrison_aglna2_float_a",
+        "desc": "<战斗中>每次释放可施加浮空的技能时，使已激活的【奇迹】层数+2",
+        "descRaw": "<战斗中>每次释放可施加浮空的技能时，使已激活的【奇迹】层数+2",
+        "eventType": "IN_BATTLE",
+        "eventTypeDesc": "持续叠加",
+        "eventTypeIcon": "icon_bond",
+        "effectType": "ADD_BOND",
+        "effectKey": "act1autochess_gar_event_selfdead",
+        "battleRuneKey": "env_gbuff_new_with_verify",
+        "charLevel": 0,
+        "bb": {
+          "bond_add_count": 2
+        },
+        "bbStr": {
+          "key": "MOD_TRIGGER_levitate_skill_cast",
+          "bond_type": "bond_by_id",
+          "bond_id": "miraShip",
+          "bond_add_type": "by_count"
+        },
+        "owners": [
+          "chess_char_1015_aglna2_a",
+          "chess_char_1015_aglna2_b"
+        ]
+      },
+      "garrison_aglna2_takeoff_a": {
+        "garrisonId": "garrison_aglna2_takeoff_a",
+        "desc": "<战斗中>己方任意干员起飞时（含自身），使已激活的【叙拉古】【迅捷】层数各+2",
+        "descRaw": "<战斗中>己方任意干员起飞时（含自身），使已激活的【叙拉古】【迅捷】层数各+2",
+        "eventType": "IN_BATTLE",
+        "eventTypeDesc": "持续叠加",
+        "eventTypeIcon": "icon_bond",
+        "effectType": "ADD_BOND",
+        "effectKey": "act1autochess_gar_event_selfdead",
+        "battleRuneKey": "env_gbuff_new_with_verify",
+        "charLevel": 0,
+        "bb": {
+          "bond_add_count": 2
+        },
+        "bbStr": {
+          "key": "MOD_TRIGGER_ally_liftoff",
+          "bond_type": "bond_by_id",
+          "bond_id": "siracusaShip,swiftShip",
+          "bond_add_type": "by_count"
+        },
+        "owners": [
+          "chess_char_1015_aglna2_a",
+          "chess_char_1015_aglna2_b"
+        ]
+      },
+      "garrison_amiya3_allowance_a": {
+        "garrisonId": "garrison_amiya3_allowance_a",
+        "desc": "整备期结束时，使【远见】盟约叠加3层，整备区同样生效",
+        "descRaw": "整备期结束时，使【远见】盟约叠加3层，整备区同样生效",
+        "eventType": "SERVER_PREP_FIN",
+        "eventTypeDesc": "持续叠加",
+        "eventTypeIcon": "icon_bond",
+        "effectType": "SERVER_ADD_BOND",
+        "effectKey": "SERVER_ADD_BOND",
+        "battleRuneKey": null,
+        "charLevel": 0,
+        "bb": {
+          "count": 3,
+          "layer": 3,
+          "bond_id": "visiShip"
+        },
+        "bbStr": {
+          "bond": "visiShip"
+        },
+        "owners": [
+          "chess_char_1037_amiya3_a",
+          "chess_char_1037_amiya3_b"
+        ]
+      }
+    }
+  },
+  "additionalBonds": {
+    "chess_char_4_26_a": [
+      "rhodeShip"
+    ],
+    "chess_char_4_26_b": [
+      "rhodeShip"
+    ],
+    "chess_char_5_04_a": [
+      "rhodeShip"
+    ],
+    "chess_char_5_04_b": [
+      "rhodeShip"
+    ]
+  },
+  "diyBonds": {
+    "char_003_kalts": [
+      "rhodeShip"
+    ],
+    "char_4179_monstr": [
+      "rhodeShip"
+    ],
+    "char_4195_radian": [
+      "rhodeShip"
+    ],
+    "char_4228_closur": [
+      "rhodeShip"
+    ],
+    "char_4230_mcnist": [
+      "rhodeShip"
+    ]
+  },
+  "displayTokens": {
+    "token_makoto_orpheus": {
+      "tokenId": "token_makoto_orpheus",
+      "kind": "summon",
+      "name": "俄耳甫斯",
+      "appellation": "Persona",
+      "desc": "不阻挡敌人",
+      "descRaw": "不阻挡敌人",
+      "profession": "TOKEN",
+      "subProfessionId": "notchar1",
+      "position": "ALL",
+      "displayType": "HIDDEN",
+      "placeable": false,
+      "ownerRange": false,
+      "owners": [
+        "chess_char_4217_makoto_a",
+        "chess_char_4217_makoto_b"
+      ],
+      "stats": {
+        "maxHp": 1000,
+        "atk": 677,
+        "def": 0,
+        "res": 0,
+        "cost": 0,
+        "blockCnt": 0,
+        "bat": 1.1,
+        "aspd": 100,
+        "respawnTime": 70,
+        "spRecovery": 1,
+        "hpRecoveryPerSec": 0,
+        "moveSpeed": 1,
+        "tauntLevel": 0,
+        "massLevel": 0,
+        "deployLimit": 1,
+        "deckStack": 0
+      },
+      "rangeGrid": [
+        [
+          1,
+          -1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          -1,
+          1
+        ]
+      ],
+      "dmgType": "arts",
+      "attackKind": "melee",
+      "projectile": "none",
+      "canHitFly": true,
+      "skill": null,
+      "deployLimit": 1,
+      "count": null,
+      "abnormal": [],
+      "variants": {
+        "chess_char_4217_makoto_a": {
+          "phase": 2,
+          "level": 1,
+          "stats": {
+            "maxHp": 1000,
+            "atk": 677,
+            "def": 0,
+            "res": 0,
+            "cost": 0,
+            "blockCnt": 0,
+            "bat": 1.1,
+            "aspd": 100,
+            "respawnTime": 70,
+            "spRecovery": 1,
+            "hpRecoveryPerSec": 0,
+            "moveSpeed": 1,
+            "tauntLevel": 0,
+            "massLevel": 0,
+            "deployLimit": 1,
+            "deckStack": 0
+          },
+          "immunities": {
+            "stun": false,
+            "silence": false,
+            "sleep": false,
+            "frozen": false,
+            "levitate": false
+          },
+          "rangeGrid": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ],
+          "trait": {
+            "desc": "不阻挡敌人",
+            "descRaw": "不阻挡敌人",
+            "bb": {},
+            "bbStr": {}
+          },
+          "dmgType": "arts",
+          "attackKind": "melee",
+          "projectile": "none",
+          "canHitFly": true,
+          "targetPriority": null,
+          "skill": null,
+          "talents": [],
+          "count": null,
+          "sources": [
+            "skill"
+          ],
+          "bySkill": {
+            "0": {
+              "skill": null,
+              "count": null,
+              "sources": [
+                "skill"
+              ]
+            },
+            "2": {
+              "skill": null,
+              "count": null,
+              "sources": [
+                "skill"
+              ]
+            }
+          }
+        },
+        "chess_char_4217_makoto_b": {
+          "phase": 2,
+          "level": 60,
+          "stats": {
+            "maxHp": 1000,
+            "atk": 771,
+            "def": 0,
+            "res": 0,
+            "cost": 0,
+            "blockCnt": 0,
+            "bat": 1.1,
+            "aspd": 100,
+            "respawnTime": 70,
+            "spRecovery": 1,
+            "hpRecoveryPerSec": 0,
+            "moveSpeed": 1,
+            "tauntLevel": 0,
+            "massLevel": 0,
+            "deployLimit": 1,
+            "deckStack": 0
+          },
+          "immunities": {
+            "stun": false,
+            "silence": false,
+            "sleep": false,
+            "frozen": false,
+            "levitate": false
+          },
+          "rangeGrid": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ],
+          "trait": {
+            "desc": "不阻挡敌人",
+            "descRaw": "不阻挡敌人",
+            "bb": {},
+            "bbStr": {}
+          },
+          "dmgType": "arts",
+          "attackKind": "melee",
+          "projectile": "none",
+          "canHitFly": true,
+          "targetPriority": null,
+          "skill": null,
+          "talents": [],
+          "count": null,
+          "sources": [
+            "skill"
+          ],
+          "bySkill": {
+            "0": {
+              "skill": null,
+              "count": null,
+              "sources": [
+                "skill"
+              ]
+            },
+            "2": {
+              "skill": null,
+              "count": null,
+              "sources": [
+                "skill"
+              ]
+            }
+          },
+          "byModule": {}
+        }
+      },
+      "assets": {
+        "avatar": "char_4217_makoto",
+        "spine": "char_4217_makoto"
+      },
+      "charId": "char_4217_makoto",
+      "isGolden": false,
+      "source": "mod",
+      "note": "MOD: 结城理 <替身>的人格面具（塔纳托斯 / 俄耳甫斯）—— 战斗中是干员自身的技能状态（kits/tier3.js），非独立上场单位；因官方库无独立素材，美术复用干员自身头像与模型（tools/assets/plan.mjs 按 token id 派生的路径在磁盘上缺失时由客户端回退）。"
+    },
+    "token_makoto_thanatos": {
+      "tokenId": "token_makoto_thanatos",
+      "kind": "summon",
+      "name": "塔纳托斯",
+      "appellation": "Persona",
+      "desc": "不阻挡敌人",
+      "descRaw": "不阻挡敌人",
+      "profession": "TOKEN",
+      "subProfessionId": "notchar1",
+      "position": "ALL",
+      "displayType": "HIDDEN",
+      "placeable": false,
+      "ownerRange": false,
+      "owners": [
+        "chess_char_4217_makoto_a",
+        "chess_char_4217_makoto_b"
+      ],
+      "stats": {
+        "maxHp": 1000,
+        "atk": 677,
+        "def": 0,
+        "res": 0,
+        "cost": 0,
+        "blockCnt": 0,
+        "bat": 1.1,
+        "aspd": 100,
+        "respawnTime": 70,
+        "spRecovery": 1,
+        "hpRecoveryPerSec": 0,
+        "moveSpeed": 1,
+        "tauntLevel": 0,
+        "massLevel": 0,
+        "deployLimit": 1,
+        "deckStack": 0
+      },
+      "rangeGrid": [
+        [
+          1,
+          -1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          -1,
+          1
+        ]
+      ],
+      "dmgType": "arts",
+      "attackKind": "melee",
+      "projectile": "none",
+      "canHitFly": true,
+      "skill": null,
+      "deployLimit": 1,
+      "count": null,
+      "abnormal": [],
+      "variants": {
+        "chess_char_4217_makoto_a": {
+          "phase": 2,
+          "level": 1,
+          "stats": {
+            "maxHp": 1000,
+            "atk": 677,
+            "def": 0,
+            "res": 0,
+            "cost": 0,
+            "blockCnt": 0,
+            "bat": 1.1,
+            "aspd": 100,
+            "respawnTime": 70,
+            "spRecovery": 1,
+            "hpRecoveryPerSec": 0,
+            "moveSpeed": 1,
+            "tauntLevel": 0,
+            "massLevel": 0,
+            "deployLimit": 1,
+            "deckStack": 0
+          },
+          "immunities": {
+            "stun": false,
+            "silence": false,
+            "sleep": false,
+            "frozen": false,
+            "levitate": false
+          },
+          "rangeGrid": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ],
+          "trait": {
+            "desc": "不阻挡敌人",
+            "descRaw": "不阻挡敌人",
+            "bb": {},
+            "bbStr": {}
+          },
+          "dmgType": "arts",
+          "attackKind": "melee",
+          "projectile": "none",
+          "canHitFly": true,
+          "targetPriority": null,
+          "skill": null,
+          "talents": [],
+          "count": null,
+          "sources": [
+            "skill"
+          ],
+          "bySkill": {
+            "0": {
+              "skill": null,
+              "count": null,
+              "sources": [
+                "skill"
+              ]
+            },
+            "2": {
+              "skill": null,
+              "count": null,
+              "sources": [
+                "skill"
+              ]
+            }
+          }
+        },
+        "chess_char_4217_makoto_b": {
+          "phase": 2,
+          "level": 60,
+          "stats": {
+            "maxHp": 1000,
+            "atk": 771,
+            "def": 0,
+            "res": 0,
+            "cost": 0,
+            "blockCnt": 0,
+            "bat": 1.1,
+            "aspd": 100,
+            "respawnTime": 70,
+            "spRecovery": 1,
+            "hpRecoveryPerSec": 0,
+            "moveSpeed": 1,
+            "tauntLevel": 0,
+            "massLevel": 0,
+            "deployLimit": 1,
+            "deckStack": 0
+          },
+          "immunities": {
+            "stun": false,
+            "silence": false,
+            "sleep": false,
+            "frozen": false,
+            "levitate": false
+          },
+          "rangeGrid": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ],
+          "trait": {
+            "desc": "不阻挡敌人",
+            "descRaw": "不阻挡敌人",
+            "bb": {},
+            "bbStr": {}
+          },
+          "dmgType": "arts",
+          "attackKind": "melee",
+          "projectile": "none",
+          "canHitFly": true,
+          "targetPriority": null,
+          "skill": null,
+          "talents": [],
+          "count": null,
+          "sources": [
+            "skill"
+          ],
+          "bySkill": {
+            "0": {
+              "skill": null,
+              "count": null,
+              "sources": [
+                "skill"
+              ]
+            },
+            "2": {
+              "skill": null,
+              "count": null,
+              "sources": [
+                "skill"
+              ]
+            }
+          },
+          "byModule": {}
+        }
+      },
+      "assets": {
+        "avatar": "char_4217_makoto",
+        "spine": "char_4217_makoto"
+      },
+      "charId": "char_4217_makoto",
+      "isGolden": false,
+      "source": "mod",
+      "note": "MOD: 结城理 <替身>的人格面具（塔纳托斯 / 俄耳甫斯）—— 战斗中是干员自身的技能状态（kits/tier3.js），非独立上场单位；因官方库无独立素材，美术复用干员自身头像与模型（tools/assets/plan.mjs 按 token id 派生的路径在磁盘上缺失时由客户端回退）。"
+    }
+  },
+  "skins": {
+    "_about": "结城理（char_4217_makoto）的可选皮肤。skins[].id = 官方 skinId，与 data/assets.json 顶层分组 `skins[<skinId>]`（{ name, group, portrait, avatar, spine }）的键一致：该皮肤是否可用、显示名与立绘/头像 URL一律取清单（ui/skinModel.js availableSkins），清单里没有该 skinId 或没有 portrait 时该皮肤在客户端不出现，卡片自动回退默认立绘 —— 素材（public/assets/char/skin/*）由 MOD 素材流程落盘并由 assets 执行者登记进清单。这里只登记\"某位干员有哪几个皮肤\"；`name` 是清单缺失时的降级显示名（官方 skinName），其译文走 tools/i18n/fallback-remake.json → data/i18n/en.json。没有 spine 字段：皮肤 Spine 由清单的 `spine` 决定，没有它时皮肤只换立绘与头像，不伪造骨骼。",
+    "char_4217_makoto": {
+      "charId": "char_4217_makoto",
+      "name": "结城理",
+      "skins": [
+        {
+          "id": "char_4217_makoto@p3r#1",
+          "name": "见证荣光"
+        }
+      ]
+    }
+  },
+  "art": {
+    "bonds": {
+      "rhodeShip": {
+        "name": "罗德岛",
+        "iconId": "icon_rhodeShip",
+        "icon": {
+          "url": "https://raw.githubusercontent.com/ArknightsAssets/ArknightsAssets2/cn/assets/dyn/arts/camplogo/logo_rhodes.png"
+        },
+        "fallbackCampLogo": "https://raw.githubusercontent.com/ArknightsAssets/ArknightsAssets2/cn/assets/dyn/arts/camplogo/logo_rhodes.png"
+      }
+    },
+    "bands": {
+      "band_kun": {
+        "icon": {
+          "url": "https://raw.githubusercontent.com/ArknightsAssets/ArknightsAssets2/cn/assets/dyn/ui/autochess/%5Buc%5Dautochesscommon/arts/bondicon/icon_egirship.png"
+        },
+        "totalHp": 24
+      }
+    },
+    "tokens": {
+      "token_makoto_thanatos": {
+        "name": "塔纳托斯",
+        "avatar": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/main/avatar/char_4217_makoto.png"
+        },
+        "battleSpineDefault": null,
+        "battleSpineSkinVariantsOnly": [
+          "token_makoto_thanatos"
+        ],
+        "__mod": "MOD: 结城理 mask token, display-only (the mask is the operator's own skill state)"
+      },
+      "token_makoto_orpheus": {
+        "name": "俄耳甫斯",
+        "avatar": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/main/avatar/char_4217_makoto.png"
+        },
+        "battleSpineDefault": null,
+        "battleSpineSkinVariantsOnly": [
+          "token_makoto_orpheus"
+        ],
+        "__mod": "MOD: 结城理 mask token, display-only (the mask is the operator's own skill state)"
+      }
+    }
+  }
+}

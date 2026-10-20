@@ -1,0 +1,11 @@
+{
+  "name": "marisa-native-build",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build-runtime.mjs && node build-ui.mjs && node build-tests.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}
